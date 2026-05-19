@@ -11,17 +11,12 @@ public class myFirstCubeScript : MonoBehaviour
     GameObject myFirstCube;
 
 
-    private void Awake()
-    {
-        Debug.Log("Etat de Input; " + _inputs.Player.enabled);
-        InputAssignation();
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("Etat de Input; " + _inputs.Player.enabled);
         _inputs = new TestInput();
+        Debug.Log("Etat de Input; " + _inputs.Player.enabled);
+        InputAssignation();
         myFirstCube = gameObject;
         EnableAction();
     }
@@ -30,6 +25,8 @@ public class myFirstCubeScript : MonoBehaviour
     {
         Debug.Log("Etat de Input; "+_inputs.Player.enabled);
         _inputs?.Player.Enable();
+        Debug.Log("Etat de Input; " + _inputs.Player.enabled);
+
     }
 
     // Update is called once per frame
