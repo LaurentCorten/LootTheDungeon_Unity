@@ -9,6 +9,7 @@ public class myFirstCubeScript : MonoBehaviour
 
     public Vector2 moveVector;
     GameObject myFirstCube;
+    Transform _trans;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -19,6 +20,7 @@ public class myFirstCubeScript : MonoBehaviour
         InputAssignation();
         myFirstCube = gameObject;
         EnableAction();
+        _trans = myFirstCube.GetComponent<Transform>();
     }
 
     private void EnableAction()
@@ -42,7 +44,9 @@ public class myFirstCubeScript : MonoBehaviour
 
     private void ApplyMove()
     {
-        
+        _trans.position += new Vector3(moveVector.x,0,moveVector.y);
+        //_trans.position = new Vector3(_trans.position.x+moveVector.x, _trans.position.y, _trans.position.z+moveVector.y);
+        //_trans.Translate(new Vector3(moveVector.x, 0, moveVector.y));
     }
 
     public void InputAssignation()
