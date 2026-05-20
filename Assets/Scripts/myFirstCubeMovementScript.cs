@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,8 +7,9 @@ public class myFirstCubeScript : MonoBehaviour
     TestInput _inputs;
 
     public Vector2 moveVector;
-    GameObject myFirstCube;
     Transform _trans;
+
+    public float velocity = 0.1f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -18,9 +18,8 @@ public class myFirstCubeScript : MonoBehaviour
         _inputs = new TestInput();
         Debug.Log("Etat de Input; " + _inputs.Player.enabled);
         InputAssignation();
-        myFirstCube = gameObject;
         EnableAction();
-        _trans = myFirstCube.GetComponent<Transform>();
+        _trans = gameObject.GetComponent<Transform>();
     }
 
     private void EnableAction()
@@ -37,16 +36,12 @@ public class myFirstCubeScript : MonoBehaviour
         ApplyMove();
     }
 
-//  Transform _Tr = MyGO.GetComponent<Transform>();
-//  _Tr.position += New Vector3(0,1,0)
-//  _Tr.position = New Vector3(Tr.position.x,1, Tr.position.z)
-//  _Tr.Translate(New Vector3(0,1,0))
 
     private void ApplyMove()
     {
-        _trans.position += new Vector3(moveVector.x,0,moveVector.y);
-        //_trans.position = new Vector3(_trans.position.x+moveVector.x, _trans.position.y, _trans.position.z+moveVector.y);
-        //_trans.Translate(new Vector3(moveVector.x, 0, moveVector.y));
+        _trans.position += new Vector3(moveVector.x,0,moveVector.y) * velocity;
+        //_trans.position = new Vector3(_trans.position.x+moveVector.x, _trans.position.y, _trans.position.z+moveVector.y) * velocity;
+        //_trans.Translate(new Vector3(moveVector.x, 0, moveVector.y)) * velocity;
     }
 
     public void InputAssignation()
