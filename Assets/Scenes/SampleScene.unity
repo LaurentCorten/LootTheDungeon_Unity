@@ -418,10 +418,11 @@ GameObject:
   - component: {fileID: 764704316}
   - component: {fileID: 764704315}
   - component: {fileID: 764704314}
+  - component: {fileID: 764704318}
   - component: {fileID: 764704313}
   - component: {fileID: 764704317}
-  - component: {fileID: 764704318}
   - component: {fileID: 764704319}
+  - component: {fileID: 764704320}
   m_Layer: 0
   m_Name: myFirstCube
   m_TagString: Player
@@ -529,7 +530,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764704311}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 05d6d8210ea87a549ac27c88f782afc3, type: 3}
   m_Name: 
@@ -580,6 +581,22 @@ MonoBehaviour:
   wellCookedColor: {r: 0.6470588, g: 0.1647059, b: 0.1647059, a: 1}
   textMeshProUGUI: {fileID: 1133326539}
   _touch: 0
+--- !u!114 &764704320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764704311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0d3726507b6ea84e831a844edd2a2d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWalk
+  inputActions: {fileID: -944628639613478452, guid: 579c94c870483cb44b5adf49a7b03336, type: 3}
+  WalkSpeed: 5
+  RotateSpeed: 5
+  JumpSpeed: 5
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1061,7 +1078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
-    BindingMode: 4
+    BindingMode: 3
     PositionDamping: {x: 1, y: 1, z: 1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
@@ -1342,6 +1359,8 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 579486337}
+  - {fileID: 1741423541}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 764704316}
@@ -1351,5 +1370,3 @@ SceneRoots:
   - {fileID: 1402935836}
   - {fileID: 4632093524193373400}
   - {fileID: 1897692714}
-  - {fileID: 1741423541}
-  - {fileID: 579486337}

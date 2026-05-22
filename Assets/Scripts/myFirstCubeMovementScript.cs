@@ -22,6 +22,12 @@ public class myFirstCubeScript : MonoBehaviour
         _trans = gameObject.GetComponent<Transform>();
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        ApplyMove();
+    }
+
     private void EnableAction()
     {
         Debug.Log("Etat de Input; "+_inputs.Player.enabled);
@@ -29,13 +35,6 @@ public class myFirstCubeScript : MonoBehaviour
         Debug.Log("Etat de Input; " + _inputs.Player.enabled);
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        ApplyMove();
-    }
-
 
     private void ApplyMove()
     {
