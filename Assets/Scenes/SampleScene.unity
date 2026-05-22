@@ -594,8 +594,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWalk
   inputActions: {fileID: -944628639613478452, guid: 579c94c870483cb44b5adf49a7b03336, type: 3}
-  WalkSpeed: 5
-  RotateSpeed: 5
+  WalkSpeed: 10
+  RotateSpeed: 66
   JumpSpeed: 5
 --- !u!1 &832575517
 GameObject:

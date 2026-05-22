@@ -31,7 +31,13 @@ public class PlayerWalk : MonoBehaviour
     private void Awake()
     {
         _moveAction = InputSystem.actions.FindAction("Move");
+        _moveAction.performed += OnMovePerformed;
+        _moveAction.canceled += OnMoveCanceled;
+
         _lookAction = InputSystem.actions.FindAction("Look");
+        _lookAction.performed += OnLookPerformed;
+        _lookAction.canceled += OnLookCanceled;
+
         //_jumpAction = InputSystem.actions.FindAction("Jump");
 
         _rb = GetComponent<Rigidbody>();
@@ -39,8 +45,6 @@ public class PlayerWalk : MonoBehaviour
 
     private void Update()
     {
-        _moveAmt = _moveAction.ReadValue<Vector2>();
-        _lookAmt = _lookAction.ReadValue<Vector2>();
 
         //if (_jumpAction.WasPressedThisFrame()) {
         //    Jump();
@@ -51,6 +55,34 @@ public class PlayerWalk : MonoBehaviour
     {
         Walking();
         Rotating();
+    }
+
+    private void OnDestroy()
+    {
+        _moveAction.performed -= OnMovePerformed;
+        _moveAction.canceled -= OnMoveCanceled;
+        _lookAction.performed -= OnLookPerformed;        
+        _lookAction.canceled -= OnLookCanceled;        
+    }
+
+    private void OnLookPerformed(InputAction.CallbackContext context)
+    {
+        _lookAmt = _lookAction.ReadValue<Vector2>().normalized;
+    }
+
+    private void OnLookCanceled(InputAction.CallbackContext context)
+    {
+        _lookAmt = Vector2.zero;
+    }
+
+    private void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        _moveAmt = _moveAction.ReadValue<Vector2>();
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context)
+    {
+        _moveAmt = Vector2.zero;
     }
 
     private void Rotating()
