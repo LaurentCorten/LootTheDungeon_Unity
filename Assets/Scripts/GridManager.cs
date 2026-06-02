@@ -6,7 +6,7 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] Vector2Int _gridSize;
     [SerializeField] int _unityGridSize;
-    Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
+    [SerializeField] Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
 
     [SerializeField] int _nbEncounters = 10;
     [SerializeField] int _nbObstacles = 10;
@@ -20,78 +20,6 @@ public class GridManager : MonoBehaviour
     {
         InitiateGrid();
         FillGrid();
-    }
-
-
-    private void FillGrid()
-    {
-        bool hasPossiblePath = false;
-
-        do
-        {
-            DrawObstaclesPositions();
-            startCoords = DrawTilePosition(TileState.Start);
-            exitCoords = DrawTilePosition(TileState.Exit);
-            hasPossiblePath = CheckPossiblePath(); //TODO !
-        } while (!hasPossiblePath);
-
-        DrawEncountersPositions();
-    }
-
-    // Pourrait regrouper les méthodes 2 par 2 qui prend l'enum en param et avec un switch dedans
-    private void DrawEncountersPositions()
-    {
-        for(int i = 0; i < _nbEncounters; i++)
-        {
-            Vector2Int newEncounterPosition = PickNewAvailablePosition();
-            Tile encounterTile = new Tile(newEncounterPosition, TileState.Encounter);
-        }
-    }
-    private void DrawObstaclesPositions()
-    {
-        for(int i = 0; i < _nbObstacles; i++)
-        {
-            Vector2Int newObstaclePosition = PickNewAvailablePosition();
-            Tile obstacleTile = new Tile(newObstaclePosition, TileState.Obstacle);
-        }
-    }
-
-    private Vector2Int DrawTilePosition(TileState tileState)
-    {
-        Vector2Int exitPosition = PickNewAvailablePosition();
-        Tile exitTile = new Tile(exitPosition, tileState);
-        Debug.Log($"ExitPosition = ({exitPosition.x},{exitPosition.y})");
-        return exitPosition;
-    }
-
-    /// <summary>
-    /// Tire une position dans le _grid jusqu'à en trouver une libre.
-    /// </summary>
-    /// <returns>Retourne un vecteur position pas encore occupé sur la grille. Attention retourne le vecteur (-1, -1) en cas d'erreur de position hors grid !</returns>
-    private Vector2Int PickNewAvailablePosition()
-    {
-        Vector2Int newPostion = new Vector2Int();
-        bool isValidPosition = false;
-        Tile testedTile;
-
-        do
-        {
-            newPostion.x = Random.Range(1, _gridSize.x - 2);
-            newPostion.y = Random.Range(1, _gridSize.y - 2);
-
-            _grid.TryGetValue(newPostion, out testedTile);
-
-            isValidPosition = testedTile.TileState == TileState.Available;
-
-        } while (!isValidPosition);
-
-        if(!_grid.ContainsKey(newPostion))
-        {
-            Debug.Log($"Position tirée = ({newPostion.x},{newPostion.y}) est non valide !");
-            return new Vector2Int (-1, -1);
-        }
-
-        return newPostion;
     }
 
     private void InitiateGrid()
@@ -117,4 +45,146 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    private void FillGrid()
+    {
+        bool hasPossiblePath = false;
+
+        do
+        {
+            DrawManyTilesPositions(_nbObstacles, TileState.Obstacle);
+            startCoords = DrawOneTilePosition(TileState.Start);
+            exitCoords = DrawOneTilePosition(TileState.Exit);
+            hasPossiblePath = CheckPathExists();
+        } while (!hasPossiblePath);
+
+        DrawManyTilesPositions(_nbEncounters, TileState.Encounter);
+        ;
+    }
+
+    private bool CheckPathExists()
+    {
+        List<Vector2Int> tilesToCheck = new List<Vector2Int> { startCoords };
+        List<Vector2Int> tilesChecked = new List<Vector2Int>();
+        Vector2Int[] directions = {Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
+        Vector2Int centralNode;
+        bool isPathFound = false;
+
+        do
+        {
+            // Test de garde au cas où la liste serait vide même si ça ne devrait pas.
+            if (tilesToCheck[0] == null)
+            {
+                Debug.LogWarning("Erreur ! Liste 'à étudier' vide !");
+                break;
+            }
+
+            // Chope les premières coordonées à étudier
+            centralNode = tilesToCheck[0];
+            Debug.Log($"tuile étudiée = ({centralNode.x},{centralNode.y})");
+
+            // Vérifie les 4 directions
+            foreach (var dir in directions)
+            {
+                // variables locales
+                Tile workingTile;
+                Vector2Int workingNode = centralNode + dir;
+                Debug.Log($"tuile contrôlée = ({workingNode.x},{workingNode.y})");
+
+                // Tests de garde pour éviter les tests redondants
+                if (tilesChecked.Contains(workingNode)) break;
+                if (tilesToCheck.Contains(workingNode)) break;
+
+                // Chope la tuile
+                _grid.TryGetValue(workingNode, out workingTile);
+                Debug.Log($"Tuile récupérée, status = {workingTile.TileState}");
+                
+                // Vérifie si c'est la sortie
+                if(workingTile.TileState == TileState.Exit)
+                {
+                    isPathFound = true;
+                    Debug.Log("C'était bien la sortie :D");
+                    break;
+                }
+
+                // Vérifie si c'est une case traversable et l'enregistre dans la liste des "à étudier" le cas échéant
+                if (workingTile.TileState != TileState.Obstacle)
+                {
+                    tilesToCheck.Add(workingNode);
+                    Debug.Log("Ce n'est pas la sortie ni un obstacle, sera étudiée plus tard");
+                }
+            }
+
+            // Déplace la tuile des "à étudier" aux "étudiées"
+            tilesChecked.Add(centralNode);
+            tilesToCheck.Remove(centralNode);
+            Debug.Log($"Tuile déplacée de liste");
+
+        } while (!isPathFound && tilesToCheck.Count > 0);
+
+        Debug.Log($"Sortie de boucle do/while, isPathFound = {isPathFound}");
+        return isPathFound;
+    }
+
+    private List<Vector2Int> DrawManyTilesPositions(int nbTiles, TileState tileState)
+    {
+        List<Vector2Int> tilesCoordList = new();
+        for(int i = 0; i < nbTiles; i++)
+        {
+            Vector2Int tilePosition = PickNewAvailablePosition();
+            Tile tile = new Tile(tilePosition, TileState.Obstacle);
+            Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
+            _grid.Remove(tilePosition);
+            _grid.Add(tile.Coord, tile);
+            tilesCoordList.Add(tile.Coord);
+            Debug.Log($"{tileState} {i + 1} : ({tile.Coord.x};{tile.Coord.y})");
+        }
+        return tilesCoordList;
+    }
+
+    private Vector2Int DrawOneTilePosition(TileState tileState)
+    {
+        Vector2Int tilePosition = PickNewAvailablePosition();
+        Tile tile = new Tile(tilePosition, tileState);
+        Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
+        _grid.Remove(tilePosition);
+        _grid.Add(tile.Coord, tile);
+        Debug.Log($"{tileState} : ({tile.Coord.x};{tile.Coord.y})");
+        return tilePosition;
+    }
+
+    /// <summary>
+    /// Tire une position dans le _grid jusqu'à en trouver une libre.
+    /// </summary>
+    /// <returns>Retourne un vecteur position pas encore occupé sur la grille. Attention retourne le vecteur (-1, -1) en cas d'erreur de position hors grid !</returns>
+    private Vector2Int PickNewAvailablePosition()
+    {
+        Vector2Int newPostion = new Vector2Int();
+        bool isValidPosition = false;
+        Tile testedTile;
+
+        do
+        {
+            newPostion.x = Random.Range(1,(_gridSize.x-2));
+            newPostion.y = Random.Range(1,(_gridSize.y-2));
+            Debug.Log($"newPosition coords = ({newPostion.x};{newPostion.y})");
+
+            bool successfulExtraction = _grid.TryGetValue(newPostion, out testedTile);
+            Debug.Log($"successfulExtraction = {successfulExtraction} et testedTile status = {testedTile.TileState}");
+
+            isValidPosition = testedTile.TileState == TileState.Available;
+            Debug.Log($"newPosition est valid = {isValidPosition}");
+
+        } while (!isValidPosition);
+
+        if(!_grid.ContainsKey(newPostion))
+        {
+            Debug.Log($"Position tirée = ({newPostion.x},{newPostion.y}) est non valide !");
+            return new Vector2Int (-1, -1);
+        }
+
+        return newPostion;
+    }
+
+
 }

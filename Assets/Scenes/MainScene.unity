@@ -725,9 +725,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1298758534}
     - targetCorrespondingSourceObject: {fileID: 1042713549198568668, guid: 99363568233028543870a985dae67017, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
@@ -737,23 +734,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
   m_PrefabInstance: {fileID: 1298758531}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1298758533 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
-  m_PrefabInstance: {fileID: 1298758531}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1298758534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298758533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34e3d9453e40f2048b5aa56bbe312d52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TileLaballer
 --- !u!1 &1395577051
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,6 +780,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   _gridSize: {x: 12, y: 12}
   _unityGridSize: 1
+  _nbEncounters: 1
+  _nbObstacles: 1
+  startCoords: {x: 0, y: 0}
+  exitCoords: {x: 0, y: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
