@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8749126712319146368}
   - component: {fileID: 1959011695150858292}
   - component: {fileID: 5198817953358375967}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0,0
+  m_text: 0, 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 3714358454384266313}
   - component: {fileID: 4979042568398380002}
   - component: {fileID: -5451616340518244411}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 186846891044306206}
   - component: {fileID: 3718088926682056698}
   - component: {fileID: 5375983647929707749}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +315,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1e334a45f0ed0d2418761e7df567cbb6, type: 2}
+  - {fileID: 2100000, guid: 473a75a6673cb0249a7fe1260a7d6b59, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

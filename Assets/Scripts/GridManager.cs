@@ -8,7 +8,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] int _unityGridSize;
     [SerializeField] Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
 
-    [SerializeField] int _nbEncounters = 10;
+    [SerializeField] int _nbEncounters = 5;
     [SerializeField] int _nbObstacles = 10;
     
     public int UnityGridSize { get { return _unityGridSize; } }
@@ -18,8 +18,16 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
-        InitiateGrid();
-        FillGrid();
+        bool hasPossiblePath = false;
+
+        do
+        {
+            ClearGrid();
+            InitiateGrid();
+            FillGrid();
+            hasPossiblePath = CheckPathExists();
+        } while (!hasPossiblePath);
+
     }
 
     private void InitiateGrid()
@@ -46,20 +54,18 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    // TODO: Mettre une distance minimum entre start et exit !
     private void FillGrid()
     {
-        bool hasPossiblePath = false;
+        AssignManyTilesPositions(_nbObstacles, TileState.Obstacle);
+        startCoords = AssignOneTilePosition(TileState.Start);
+        exitCoords = AssignOneTilePosition(TileState.Exit);
+        AssignManyTilesPositions(_nbEncounters, TileState.Encounter);        
+    }
 
-        do
-        {
-            DrawManyTilesPositions(_nbObstacles, TileState.Obstacle);
-            startCoords = DrawOneTilePosition(TileState.Start);
-            exitCoords = DrawOneTilePosition(TileState.Exit);
-            hasPossiblePath = CheckPathExists();
-        } while (!hasPossiblePath);
-
-        DrawManyTilesPositions(_nbEncounters, TileState.Encounter);
-        ;
+    private void ClearGrid()
+    {
+        _grid.Clear();
     }
 
     private bool CheckPathExists()
@@ -92,8 +98,8 @@ public class GridManager : MonoBehaviour
                 Debug.Log($"tuile contrôlée = ({workingNode.x},{workingNode.y})");
 
                 // Tests de garde pour éviter les tests redondants
-                if (tilesChecked.Contains(workingNode)) break;
-                if (tilesToCheck.Contains(workingNode)) break;
+                if (tilesChecked.Contains(workingNode)) continue;
+                if (tilesToCheck.Contains(workingNode)) continue;
 
                 // Chope la tuile
                 _grid.TryGetValue(workingNode, out workingTile);
@@ -126,13 +132,13 @@ public class GridManager : MonoBehaviour
         return isPathFound;
     }
 
-    private List<Vector2Int> DrawManyTilesPositions(int nbTiles, TileState tileState)
+    private List<Vector2Int> AssignManyTilesPositions(int nbTiles, TileState tileState)
     {
         List<Vector2Int> tilesCoordList = new();
         for(int i = 0; i < nbTiles; i++)
         {
             Vector2Int tilePosition = PickNewAvailablePosition();
-            Tile tile = new Tile(tilePosition, TileState.Obstacle);
+            Tile tile = new Tile(tilePosition, tileState);
             Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
             _grid.Remove(tilePosition);
             _grid.Add(tile.Coord, tile);
@@ -142,7 +148,7 @@ public class GridManager : MonoBehaviour
         return tilesCoordList;
     }
 
-    private Vector2Int DrawOneTilePosition(TileState tileState)
+    private Vector2Int AssignOneTilePosition(TileState tileState)
     {
         Vector2Int tilePosition = PickNewAvailablePosition();
         Tile tile = new Tile(tilePosition, tileState);
