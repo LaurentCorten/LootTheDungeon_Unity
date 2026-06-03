@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
   ennemyPrefab: {fileID: 6258659200234999114, guid: fffd00a381a29e949804b19ae6d61cc1, type: 3}
-  playerPrefab: {fileID: 6923558153514969006, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
+  player: {fileID: 0}
   obstaclePrefab: {fileID: 4301504756993581953, guid: 7a1022961e12e6a4f9ba9c09ccecac67, type: 3}
   tilePrefab: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
   exitPrefab: {fileID: 6164973154471636683, guid: aea86dcce6973dc4f8319b5e6bacb599, type: 3}
@@ -755,6 +755,7 @@ MonoBehaviour:
   _unityGridSize: 1
   _nbEncounters: 10
   _nbObstacles: 35
+  _startExitOffset: 7
   startCoords: {x: 0, y: 0}
   exitCoords: {x: 0, y: 0}
 --- !u!1 &1905172350

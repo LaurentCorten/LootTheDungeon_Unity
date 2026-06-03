@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
     public GameObject ennemyPrefab;
-    public GameObject playerPrefab;
+    public GameObject player;
     public GameObject obstaclePrefab;
     public GameObject tilePrefab;
     public GameObject exitPrefab;
@@ -14,7 +13,7 @@ public class SpawnManager : MonoBehaviour
 
     private void Awake()
     {
-        
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,19 +34,26 @@ public class SpawnManager : MonoBehaviour
                     spawnObject = exitPrefab;
                     break;
                 case TileState.Start:
-                    spawnObject = playerPrefab;
+                    spawnObject = player;
                     break;
                 default:
                     spawnObject = null;
                     break;
             }
             
-            Vector3 spawnPositionModifier = ConvertPositionGridToMap(kvp.Key)+transform.position;
+            Vector3 spawnPositionModifier = ConvertPositionGridToMap(kvp.Key);
             
             Instantiate(tilePrefab, tilePrefab.transform.position + spawnPositionModifier, tilePrefab.transform.rotation);
             if (spawnObject != null)
             {
-                Instantiate(spawnObject, spawnObject.transform.position + spawnPositionModifier, spawnObject.transform.rotation);
+                if (spawnObject == player)
+                {
+                    player.transform.Translate(spawnPositionModifier);
+                }
+                else
+                {
+                    Instantiate(spawnObject, spawnObject.transform.position + spawnPositionModifier, spawnObject.transform.rotation);
+                }
             }
         }
     }
@@ -61,6 +67,6 @@ public class SpawnManager : MonoBehaviour
 
     private Vector3 ConvertPositionGridToMap(Vector2Int gridPosition)
     {
-        return new Vector3(gridPosition.x, 0, gridPosition.y);
+        return new Vector3(gridPosition.x, 0, gridPosition.y) + transform.position;
     }
 }

@@ -6,10 +6,11 @@ public class GridManager : MonoBehaviour
 {
     [SerializeField] Vector2Int _gridSize;
     [SerializeField] int _unityGridSize;
-    [SerializeField] Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
+    Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
 
     [SerializeField] int _nbEncounters = 5;
     [SerializeField] int _nbObstacles = 10;
+    [SerializeField] int _startExitOffset = 7;
     
     public int UnityGridSize { get { return _unityGridSize; } }
     public Dictionary<Vector2Int, Tile> Grid { get { return _grid; } }
@@ -22,7 +23,7 @@ public class GridManager : MonoBehaviour
 
         do
         {
-            ClearGrid();
+            ClearGrid(); // Pourrait être 'inutile' si Initiate faisait des attributions _Grid[pos]=tile plutôt que des Add à priori, mais ça me semble plus propre d'avoir un clear
             InitiateGrid();
             FillGrid();
             hasPossiblePath = CheckPathExists();
@@ -54,18 +55,48 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // TODO: Mettre une distance minimum entre start et exit !
     private void FillGrid()
     {
         AssignManyTilesPositions(_nbObstacles, TileState.Obstacle);
         startCoords = AssignOneTilePosition(TileState.Start);
-        exitCoords = AssignOneTilePosition(TileState.Exit);
+        exitCoords = GetFarEnoughExit();
         AssignManyTilesPositions(_nbEncounters, TileState.Encounter);        
     }
 
+    /// <summary>
+    /// Permet de remettre une tuile en position neutre. Pour retirer la sortie ou après résolution d'encounter.
+    /// </summary>
     private void ClearGrid()
     {
         _grid.Clear();
+    }
+
+    private void ClearOneTile(Vector2Int tilePostion)
+    {
+        Debug.Log($"Before Clear {tilePostion} => {_grid[tilePostion].TileState}");
+        _grid[tilePostion] = new Tile(tilePostion);
+        Debug.Log($"After Clear {tilePostion} => {_grid[tilePostion].TileState}");
+    }
+
+    private int CheckMinMvmt(Vector2Int pos1, Vector2Int pos2)
+    {
+        int tilesCount = Mathf.Abs(pos1.x - pos2.x) + Mathf.Abs(pos1.y - pos2.y);
+        Debug.Log($"TileCount Start-Exit = {tilesCount}");
+        return tilesCount;
+    }
+
+    private Vector2Int GetFarEnoughExit()
+    {
+        Vector2Int possibleExit = AssignOneTilePosition(TileState.Exit);
+        Debug.Log($"PossibleExit : ({possibleExit.x};{possibleExit.y})");
+        if(CheckMinMvmt(startCoords, possibleExit) < _startExitOffset)
+        {
+            Debug.Log($"Ecart Start-Exit < {_startExitOffset}");
+            ClearOneTile(possibleExit);
+            possibleExit = GetFarEnoughExit();
+        }
+        Debug.Log($"Ecart Start-Exit > {_startExitOffset}");
+        return possibleExit;
     }
 
     private bool CheckPathExists()
@@ -132,6 +163,7 @@ public class GridManager : MonoBehaviour
         return isPathFound;
     }
 
+    //? Réunir les 2 fonctions en une qui retourne éventuellement une liste de 1 seul item ?
     private List<Vector2Int> AssignManyTilesPositions(int nbTiles, TileState tileState)
     {
         List<Vector2Int> tilesCoordList = new();
@@ -140,10 +172,11 @@ public class GridManager : MonoBehaviour
             Vector2Int tilePosition = PickNewAvailablePosition();
             Tile tile = new Tile(tilePosition, tileState);
             Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
-            _grid.Remove(tilePosition);
-            _grid.Add(tile.Coord, tile);
+            //_grid.Remove(tilePosition);
+            //_grid.Add(tile.Coord, tile);
+            _grid[tile.Coord] = tile; //? Préferable ?
             tilesCoordList.Add(tile.Coord);
-            Debug.Log($"{tileState} {i + 1} : ({tile.Coord.x};{tile.Coord.y})");
+            Debug.Log($"Dans le Grid : {_grid[tile.Coord].TileState} {i + 1} : ({_grid[tile.Coord].Coord.x};{_grid[tile.Coord].Coord.y})");
         }
         return tilesCoordList;
     }
@@ -153,9 +186,11 @@ public class GridManager : MonoBehaviour
         Vector2Int tilePosition = PickNewAvailablePosition();
         Tile tile = new Tile(tilePosition, tileState);
         Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
-        _grid.Remove(tilePosition);
-        _grid.Add(tile.Coord, tile);
-        Debug.Log($"{tileState} : ({tile.Coord.x};{tile.Coord.y})");
+        //_grid.Remove(tilePosition);
+        //_grid.Add(tile.Coord, tile);
+        _grid[tile.Coord] = tile; //? Préferable ?
+        Debug.Log($"Dans le Grid : {_grid[tile.Coord].TileState} : ({_grid[tile.Coord].Coord.x};{_grid[tile.Coord].Coord.y})");
+
         return tilePosition;
     }
 
