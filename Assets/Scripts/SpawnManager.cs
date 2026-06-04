@@ -10,7 +10,9 @@ public class SpawnManager : MonoBehaviour
     public GameObject tilePrefab;
     public GameObject exitPrefab;
 
-    public GridManager gridManager;
+    [SerializeField] GridManager gridManager;
+    [SerializeField] Transform mapAnchor;
+
 
     private void Awake()
     {
@@ -44,7 +46,7 @@ public class SpawnManager : MonoBehaviour
             
             Vector3 spawnPositionModifier = gridManager.ConvertPositionGridToMap(kvp.Key);
             
-            Instantiate(tilePrefab, tilePrefab.transform.position + spawnPositionModifier, tilePrefab.transform.rotation);
+            GameObject newTile = Instantiate(tilePrefab, tilePrefab.transform.position + spawnPositionModifier, tilePrefab.transform.rotation, mapAnchor);
             if (spawnObject != null)
             {
                 if (spawnObject == player)
@@ -54,7 +56,8 @@ public class SpawnManager : MonoBehaviour
                 }
                 else
                 {
-                    Instantiate(spawnObject, spawnObject.transform.position + spawnPositionModifier, spawnObject.transform.rotation);
+                    GameObject newObject = Instantiate(spawnObject, spawnObject.transform.position + spawnPositionModifier, spawnObject.transform.rotation);
+                    newObject.transform.SetParent(newTile.transform, true);
                 }
             }
         }

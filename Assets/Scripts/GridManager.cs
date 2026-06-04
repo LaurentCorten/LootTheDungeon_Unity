@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,6 +8,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] int _unityGridSize;
     Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
 
+    [SerializeField] Transform mapAnchor;
     [SerializeField] int _nbEncounters = 5;
     [SerializeField] int _nbObstacles = 10;
     [SerializeField] int _startExitOffset = 7;
@@ -17,7 +17,6 @@ public class GridManager : MonoBehaviour
     public Dictionary<Vector2Int, Tile> Grid { get { return _grid; } }
     public Vector2Int startCoords;
     public Vector2Int exitCoords;
-    public SpawnManager spawnManager;
 
     private void Awake()
     {
@@ -208,8 +207,8 @@ public class GridManager : MonoBehaviour
 
         do
         {
-            newPostion.x = Random.Range(1,(_gridSize.x-2));
-            newPostion.y = Random.Range(1,(_gridSize.y-2));
+            newPostion.x = Random.Range(1,(_gridSize.x-1));
+            newPostion.y = Random.Range(1,(_gridSize.y-1));
             Debug.Log($"newPosition coords = ({newPostion.x};{newPostion.y})");
 
             bool successfulExtraction = _grid.TryGetValue(newPostion, out testedTile);
@@ -229,18 +228,15 @@ public class GridManager : MonoBehaviour
         return newPostion;
     }
 
-    //? Comprends pas pourquoi je ne peux pas déclarer une variable globale
-    //! Vector3 spawnerZero = spawnManager.transform.position;
-    //? ???
     public Vector3 ConvertPositionGridToMap(Vector2Int gridPosition)
     {
-        Vector3 mapPosition = new Vector3(gridPosition.x, 0, gridPosition.y) + spawnManager.transform.position;
+        Vector3 mapPosition = new Vector3(gridPosition.x, 0, gridPosition.y) + mapAnchor.position;
         return mapPosition;
     }
 
     public Vector2Int ConvertPositionMapToGrid(Vector3 mapPosition)
     {
-        mapPosition -= spawnManager.transform.position;
+        mapPosition -= mapAnchor.transform.position;
         Vector2Int gridPosition = new Vector2Int((int)mapPosition.x, (int)mapPosition.z);
         return gridPosition;
     }
