@@ -14,8 +14,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveDir;
     private Vector2 _lookDir;
 
-
-
     private void OnEnable()
     {
         inputActions.FindActionMap("Player").Enable();
