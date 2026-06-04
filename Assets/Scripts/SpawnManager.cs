@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -41,14 +42,15 @@ public class SpawnManager : MonoBehaviour
                     break;
             }
             
-            Vector3 spawnPositionModifier = ConvertPositionGridToMap(kvp.Key);
+            Vector3 spawnPositionModifier = gridManager.ConvertPositionGridToMap(kvp.Key);
             
             Instantiate(tilePrefab, tilePrefab.transform.position + spawnPositionModifier, tilePrefab.transform.rotation);
             if (spawnObject != null)
             {
                 if (spawnObject == player)
                 {
-                    player.transform.Translate(spawnPositionModifier);
+                    Vector3 spawnPostion = new Vector3(0, player.transform.position.y, 0) + spawnPositionModifier;
+                    player.transform.position = spawnPostion;
                 }
                 else
                 {
@@ -56,17 +58,5 @@ public class SpawnManager : MonoBehaviour
                 }
             }
         }
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private Vector3 ConvertPositionGridToMap(Vector2Int gridPosition)
-    {
-        return new Vector3(gridPosition.x, 0, gridPosition.y) + transform.position;
     }
 }

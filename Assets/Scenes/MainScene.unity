@@ -334,7 +334,7 @@ Transform:
   m_GameObject: {fileID: 39996411}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: -8, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -476,11 +476,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (3, 1)
+      value: Tile (-5, 1)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -520,7 +520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 3, 1
+      value: -5, 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -601,7 +601,7 @@ Transform:
   m_GameObject: {fileID: 551626106}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: -8, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -643,11 +643,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (0, 2)
+      value: Tile (-8, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -687,7 +687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 0, 2
+      value: -8, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -707,11 +707,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (2, 1)
+      value: Tile (-6, 1)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 2, 1
+      value: -6, 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -771,11 +771,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (0, 2)
+      value: Tile (-8, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -815,7 +815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 0, 2
+      value: -8, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -850,11 +850,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (1, 1)
+      value: Tile (-7, 1)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -894,7 +894,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 1, 1
+      value: -7, 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -961,11 +961,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (3, 2)
+      value: Tile (-5, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1005,7 +1005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 3, 2
+      value: -5, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1025,11 +1025,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (0, 1)
+      value: Tile (-8, 1)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1069,7 +1069,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 0, 1
+      value: -8, 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1104,11 +1104,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (3, 2)
+      value: Tile (-5, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1148,7 +1148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 3, 2
+      value: -5, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1205,11 +1205,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (2, 2)
+      value: Tile (-6, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1249,7 +1249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 2, 2
+      value: -6, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1274,11 +1274,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (0, 0)
+      value: Tile (-8, 0)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1318,7 +1318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 0, 0
+      value: -8, 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1343,11 +1343,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (1, 0)
+      value: Tile (-7, 0)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1387,7 +1387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 1, 0
+      value: -7, 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1453,6 +1453,7 @@ MonoBehaviour:
   _startExitOffset: 7
   startCoords: {x: 0, y: 0}
   exitCoords: {x: 0, y: 0}
+  spawnManager: {fileID: 44381925}
 --- !u!1001 &1541487157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1463,11 +1464,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (2, 2)
+      value: Tile (-6, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1507,7 +1508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 2, 2
+      value: -6, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1547,11 +1548,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (1, 2)
+      value: Tile (-7, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1591,7 +1592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 1, 2
+      value: -7, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1648,11 +1649,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (1, 2)
+      value: Tile (-7, 2)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1692,7 +1693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 1, 2
+      value: -7, 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1712,11 +1713,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (2, 0)
+      value: Tile (-6, 0)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1756,7 +1757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 2, 0
+      value: -6, 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1776,11 +1777,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_Name
-      value: Tile (3, 0)
+      value: Tile (-5, 0)
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 3714358454384266313, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1820,7 +1821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5198817953358375967, guid: 99363568233028543870a985dae67017, type: 3}
       propertyPath: m_text
-      value: 3, 0
+      value: -5, 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1900,7 +1901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8021054652250086591, guid: 7a1022961e12e6a4f9ba9c09ccecac67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 8021054652250086591, guid: 7a1022961e12e6a4f9ba9c09ccecac67, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1957,6 +1958,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 611598295391251945, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
+      propertyPath: gridManager
+      value: 
+      objectReference: {fileID: 1395577054}
     - target: {fileID: 3694304927101687551, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: m_ProvidesContacts
       value: 0
@@ -1967,7 +1972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7441822519436213195, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 7441822519436213195, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2020,7 +2025,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4826791614152847821, guid: aea86dcce6973dc4f8319b5e6bacb599, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -8
       objectReference: {fileID: 0}
     - target: {fileID: 4826791614152847821, guid: aea86dcce6973dc4f8319b5e6bacb599, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2077,7 +2082,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4643499223695786506, guid: fffd00a381a29e949804b19ae6d61cc1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 4643499223695786506, guid: fffd00a381a29e949804b19ae6d61cc1, type: 3}
       propertyPath: m_LocalPosition.y

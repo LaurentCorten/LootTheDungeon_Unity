@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class GridManager : MonoBehaviour
     public Dictionary<Vector2Int, Tile> Grid { get { return _grid; } }
     public Vector2Int startCoords;
     public Vector2Int exitCoords;
+    public SpawnManager spawnManager;
 
     private void Awake()
     {
@@ -227,5 +229,19 @@ public class GridManager : MonoBehaviour
         return newPostion;
     }
 
+    //? Comprends pas pourquoi je ne peux pas déclarer une variable globale
+    //! Vector3 spawnerZero = spawnManager.transform.position;
+    //? ???
+    public Vector3 ConvertPositionGridToMap(Vector2Int gridPosition)
+    {
+        Vector3 mapPosition = new Vector3(gridPosition.x, 0, gridPosition.y) + spawnManager.transform.position;
+        return mapPosition;
+    }
 
+    public Vector2Int ConvertPositionMapToGrid(Vector3 mapPosition)
+    {
+        mapPosition -= spawnManager.transform.position;
+        Vector2Int gridPosition = new Vector2Int((int)mapPosition.x, (int)mapPosition.z);
+        return gridPosition;
+    }
 }
