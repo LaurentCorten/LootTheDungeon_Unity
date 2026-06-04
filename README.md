@@ -89,8 +89,8 @@ Pas d'écran titre. Pas de menu pause. Au lancement, le joueur est directement e
 ## 🗺️ Roadmap
 
 ### 🔜 Proto v0.1 — Noyau fonctionnel
-- [ ] Génération procédurale de la carte 10×10 avec garantie de chemin
-- [ ] Déplacement first-person grid-based (ZQSDAE)
+- [x] Génération procédurale de la carte 10×10 avec garantie de chemin
+- [x] Déplacement first-person grid-based (ZQSDAE)
 - [ ] Système de combat automatique tour par tour (D&D-inspired)
 - [ ] Héros à stats fixes, un seul ennemi type (Kobold)
 - [ ] HUD minimal, écrans de fin (Game Over / Victory)
