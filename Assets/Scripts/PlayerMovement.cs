@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
             $"\r\ndroite ? => {_moveDir == Vector2Int.right}");
         
         Vector3 nextPosition3D = transform.position + transform.forward * _moveDir.y + transform.right * _moveDir.x;
-        nextPosition3D = new Vector3(Mathf.Round(nextPosition3D.x), Mathf.Round(nextPosition3D.y), Mathf.Round(nextPosition3D.z));
+        nextPosition3D = new Vector3(Mathf.Round(nextPosition3D.x), nextPosition3D.y, Mathf.Round(nextPosition3D.z));
         Vector2Int nextPosition2D = gridManager.ConvertPositionMapToGrid(nextPosition3D);
         
         Debug.LogWarning($"On veut bouger de ({transform.position.x},{transform.position.z}) à ({nextPosition3D.x},{nextPosition3D.y}, {nextPosition3D.z}) => ({nextPosition2D.x},{nextPosition2D.y})");

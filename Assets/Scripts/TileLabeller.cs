@@ -10,9 +10,9 @@ public class TileLabeller : MonoBehaviour
 
     private void Awake()
     {
-        gridManager = FindFirstObjectByType<GridManager>();
+        gridManager = FindFirstObjectByType<GridManager>(); //? Qu'est-ce que ça change concrètement de faire ça ou de [SerializeField] l'objet et drag an drop dans unity ?
         label = GetComponentInChildren<TextMeshPro>();
-
+        //label.enabled = false; // À activer en prod
         DisplayCoords();
     }
 
