@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6080937385683672113}
   - component: {fileID: 3694304927101687551}
   - component: {fileID: 611598295391251945}
+  - component: {fileID: 5015027021670409134}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -128,3 +129,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   inputActions: {fileID: -944628639613478452, guid: 579c94c870483cb44b5adf49a7b03336, type: 3}
+  gridManager: {fileID: 0}
+--- !u!114 &5015027021670409134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6923558153514969006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9d46b202e8bc74cbc95cd7eb6eed96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerState
+  data: {fileID: 11400000, guid: 4b0323adfaf9bba409680457e6f93cbd, type: 2}
