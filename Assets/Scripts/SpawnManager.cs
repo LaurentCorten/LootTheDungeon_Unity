@@ -13,7 +13,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GridManager gridManager;
     [SerializeField] Transform mapAnchor;
 
-    public Dictionary<Tile, Enemy> _tempLink = new Dictionary<Tile, Enemy>();
+    public Dictionary<Tile, EnemyState> _tempLink = new Dictionary<Tile, EnemyState>();
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class SpawnManager : MonoBehaviour
                     
                     if(kvp.Value.TileState == TileState.Encounter)
                     {
-                        _tempLink.Add(kvp.Value, newObject.GetComponent<EnemyState>().Enemy);
+                        _tempLink.Add(kvp.Value, newObject.GetComponent<EnemyState>());
                     }
                 }
             }

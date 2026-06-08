@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -7,14 +7,16 @@ public class CombatManager : MonoBehaviour
 {
     [SerializeField] GridManager gridManager;
     [SerializeField] GameObject player;
-    PlayerState playerState;
-    EnemyState enemyState;
+    PlayerMovement playerMovement;
+    Hero heroUnit;
     Enemy enemyUnit;
+    float delay = 1.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player.GetComponent<PlayerMovement>().OnPlayerMoved += HandlePlayerMoved;
+        playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement.OnPlayerMoved += HandlePlayerMoved;
     }
 
     // Update is called once per frame
@@ -28,15 +30,44 @@ public class CombatManager : MonoBehaviour
         if (gridManager.Grid[playerPosition].TileState == TileState.Encounter)
         {                
             enemyUnit = gridManager.Grid[playerPosition].Enemy;
-            StartCombat(enemyUnit);
+            StartCoroutine(StartCombat());
         }
     }
 
-    private void StartCombat(Enemy enemyUnit)
+    //TODO check comment bloquer le reste + faire le pendant visuel
+    IEnumerator StartCombat()
     {
-        playerState = player.GetComponent<PlayerState>();
-        //TODO boucle de combat !! Avec Blocage du reste !!!
-        Debug.Log(RollInit(playerState.Hero.DEX, enemyUnit.DEX));
+        playerMovement.ToggleInputReading();
+        Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
+        yield return new WaitForSeconds(delay);
+        yield return RunCombat();
+        playerMovement.ToggleInputReading();
+    }
+
+    private IEnumerator RunCombat()
+    {
+        heroUnit = player.GetComponent<PlayerState>().hero;
+        Debug.LogWarning($"Stats de départ : Hero currentPV = {heroUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
+        yield return new WaitForSeconds(delay);
+
+        bool isHeroFirst = RollInit(heroUnit.DEX, enemyUnit.DEX);
+        Fighter firstToPlay = isHeroFirst ? heroUnit : enemyUnit;
+        Fighter secondToPlay = isHeroFirst ? enemyUnit : heroUnit;
+        Debug.LogWarning($"{firstToPlay.Name} est à l'initiative");
+        yield return new WaitForSeconds(delay);
+
+        do
+        {
+            Attack(firstToPlay, secondToPlay);
+            yield return new WaitForSeconds(delay);
+            Attack(secondToPlay, firstToPlay);
+            yield return new WaitForSeconds(delay);
+            Debug.LogWarning($"Stats MaJ : Hero currentPV = {heroUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
+            yield return new WaitForSeconds(delay);
+        } while (heroUnit.IsAlive && enemyUnit.IsAlive);
+        Debug.LogWarning($"{(heroUnit.IsAlive ? $"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {heroUnit.CurrentHp} PV !" : $"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix")}");
+
+        yield return null;
     }
 
     /// <summary>
@@ -80,6 +111,18 @@ public class CombatManager : MonoBehaviour
             dmg += Random.Range(1, int.Parse(subs[1]) + 1);
         }
         return dmg;
+    }
+
+    private void Attack(Fighter attacker, Fighter target)
+    {
+        if (!RollTouch(attacker.MainStat, target.AC))
+        {
+            Debug.LogWarning($"{attacker.Name} s'est lamentablement foiré et à complètement raté {target.Name}");
+            return;
+        }
+        int dmg = RollDmg(attacker.Damages);
+        target.AdaptLife(-dmg);
+        Debug.LogWarning($"{attacker.Name} a fait {dmg} dégât à {target.Name}");
     }
 
 }

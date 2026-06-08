@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public event Action<Vector2Int> OnPlayerMoved;
     public InputActionAsset inputActions;
+    public InputActionMap inputActionMap;
     public GridManager gridManager;
 
     private InputAction _moveAction;
@@ -16,11 +17,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        inputActions.FindActionMap("Player").Enable();
+        inputActionMap = inputActions.FindActionMap("Player");
+        inputActionMap.Enable();
     }
     private void OnDisable()
     {
-        inputActions.FindActionMap("Player").Disable();
+        inputActionMap.Disable();
     }
 
     private void Awake()
@@ -40,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
         _lookAction.performed -= OnLookPerformed;
         _lookAction.canceled -= OnLookCanceled;
     }
-       
+    
+    
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
         _lookDir = _lookAction.ReadValue<Vector2>().normalized;
@@ -99,5 +102,15 @@ public class PlayerMovement : MonoBehaviour
         bool isOk = gridManager.Grid[postionToCheck].TileState != TileState.Obstacle;
         //Debug.LogWarning($"case walkable = {isOk}");
         return isOk;
+    }
+
+    public void ToggleInputReading()
+    {
+        if (inputActionMap.enabled == true)
+        {
+            inputActionMap.Disable(); 
+        } else { 
+            inputActionMap.Enable(); 
+        }
     }
 }

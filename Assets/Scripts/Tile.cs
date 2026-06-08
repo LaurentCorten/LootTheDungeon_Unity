@@ -5,12 +5,12 @@ public class Tile
     // Champs
     private Vector2Int _coords;
     private TileState _tileState;
-    private Enemy? _enemy;
+    private Enemy _enemy;
 
     // Propriétés
     public Vector2Int Coord { get =>_coords;}
     public TileState TileState { get => _tileState; }
-    public Enemy? Enemy { get => _enemy; }
+    public Enemy Enemy { get => _enemy; }
 
     // Ctor
     public Tile(Vector2Int coords, TileState tileState = TileState.Available)
@@ -26,9 +26,9 @@ public class Tile
     //    _enemy = enemy;
     //}
 
-    public void SetEnemy(Enemy enemy)
+    public void SetEnemy(EnemyState enemyState)
     {
-        _enemy = enemy;
+        _enemy = enemyState.enemy;
     }
 }
 

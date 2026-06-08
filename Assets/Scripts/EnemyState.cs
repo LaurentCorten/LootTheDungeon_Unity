@@ -3,13 +3,14 @@ using UnityEngine;
 public class EnemyState : MonoBehaviour
 {
     [SerializeField] EnemyData data;
-    public Enemy Enemy { get; private set; }
+    public Enemy enemy;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Enemy = new Enemy(
+        enemy = new Enemy(
             data.archetype,
+            $"{data.archetype} {Random.Range(1,101)}",
             data.hpMax,
             data.CON,
             data.STR,
