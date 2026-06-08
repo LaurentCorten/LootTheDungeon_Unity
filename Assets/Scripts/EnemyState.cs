@@ -28,6 +28,9 @@ public class EnemyState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(!enemy.IsAlive)
+        {
+            Destroy(gameObject);
+        }
     }
 }

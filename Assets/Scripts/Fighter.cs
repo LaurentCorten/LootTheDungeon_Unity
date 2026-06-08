@@ -42,7 +42,10 @@ public abstract class Fighter
     public void AdaptLife(int amount)
     {
         if (CurrentHp + amount > HpMax)
-        { CurrentHp = HpMax; return; }
+        {
+            CurrentHp = HpMax;
+            return;
+        }
         if (CurrentHp + amount <= 0)
         {
             CurrentHp = 0;

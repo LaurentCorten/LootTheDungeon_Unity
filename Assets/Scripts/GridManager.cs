@@ -72,7 +72,7 @@ public class GridManager : MonoBehaviour
         _grid.Clear();
     }
 
-    private void ClearOneTile(Vector2Int tilePostion)
+    public void ClearOneTile(Vector2Int tilePostion)
     {
         Debug.Log($"Before Clear {tilePostion} => {_grid[tilePostion].TileState}");
         _grid[tilePostion] = new Tile(tilePostion);

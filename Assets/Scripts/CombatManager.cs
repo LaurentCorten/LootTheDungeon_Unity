@@ -41,6 +41,11 @@ public class CombatManager : MonoBehaviour
         Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
         yield return new WaitForSeconds(delay);
         yield return RunCombat();
+        if (heroUnit.IsAlive)
+        {
+            Vector2Int gridPosition = gridManager.ConvertPositionMapToGrid(player.transform.position);
+            gridManager.ClearOneTile(gridPosition);
+        }
         playerMovement.ToggleInputReading();
     }
 
