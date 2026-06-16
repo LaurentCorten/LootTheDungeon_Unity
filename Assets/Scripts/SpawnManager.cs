@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -13,6 +13,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GridManager gridManager;
     [SerializeField] Transform mapAnchor;
 
+    public Dictionary<Tile, EnemyState> _tempLink = new Dictionary<Tile, EnemyState>();
 
     private void Awake()
     {
@@ -47,6 +48,7 @@ public class SpawnManager : MonoBehaviour
             Vector3 spawnPositionModifier = gridManager.ConvertPositionGridToMap(kvp.Key);
             
             GameObject newTile = Instantiate(tilePrefab, tilePrefab.transform.position + spawnPositionModifier, tilePrefab.transform.rotation, mapAnchor);
+            
             if (spawnObject != null)
             {
                 if (spawnObject == player)
@@ -58,8 +60,24 @@ public class SpawnManager : MonoBehaviour
                 {
                     GameObject newObject = Instantiate(spawnObject, spawnObject.transform.position + spawnPositionModifier, spawnObject.transform.rotation);
                     newObject.transform.SetParent(newTile.transform, true);
+                    
+                    if(kvp.Value.TileState == TileState.Encounter)
+                    {
+                        _tempLink.Add(kvp.Value, newObject.GetComponent<EnemyState>());
+                    }
                 }
             }
+        }
+        StartCoroutine(LinkEnemiesToTiles());
+    }
+
+    private IEnumerator LinkEnemiesToTiles()
+    {
+        yield return new WaitForEndOfFrame();
+
+        foreach (var kvp in _tempLink)
+        {
+           kvp.Key.SetEnemy(kvp.Value);
         }
     }
 }

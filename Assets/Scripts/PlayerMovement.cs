@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public event Action<Vector2Int> OnPlayerMoved;
     public InputActionAsset inputActions;
+    public InputActionMap inputActionMap;
     public GridManager gridManager;
 
     private InputAction _moveAction;
@@ -16,11 +17,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        inputActions.FindActionMap("Player").Enable();
+        inputActionMap = inputActions.FindActionMap("Player");
+        inputActionMap.Enable();
     }
     private void OnDisable()
     {
-        inputActions.FindActionMap("Player").Disable();
+        inputActionMap.Disable();
     }
 
     private void Awake()
@@ -33,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
         _lookAction.performed += OnLookPerformed;
         _lookAction.canceled += OnLookCanceled;
     }
-
     private void OnDestroy()
     {
         _moveAction.performed -= OnMovePerformed;
@@ -41,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
         _lookAction.performed -= OnLookPerformed;
         _lookAction.canceled -= OnLookCanceled;
     }
-       
+    
+    
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
         _lookDir = _lookAction.ReadValue<Vector2>().normalized;
@@ -75,22 +77,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void Moving()
     {
-        Debug.LogWarning($"moveDir.x = {_moveDir.x} -- moveDir.y = {_moveDir.y}" +
-            $"\r\nHaut ? => {_moveDir == Vector2Int.up}" +
-            $"\r\nBas ? => {_moveDir == Vector2Int.down}" +
-            $"\r\nGauche ? => {_moveDir == Vector2Int.left}" +
-            $"\r\ndroite ? => {_moveDir == Vector2Int.right}");
+        //Debug.LogWarning($"moveDir.x = {_moveDir.x} -- moveDir.y = {_moveDir.y}" +
+        //    $"\r\nHaut ? => {_moveDir == Vector2Int.up}" +
+        //    $"\r\nBas ? => {_moveDir == Vector2Int.down}" +
+        //    $"\r\nGauche ? => {_moveDir == Vector2Int.left}" +
+        //    $"\r\ndroite ? => {_moveDir == Vector2Int.right}");
         
         Vector3 nextPosition3D = transform.position + transform.forward * _moveDir.y + transform.right * _moveDir.x;
         nextPosition3D = new Vector3(Mathf.Round(nextPosition3D.x), nextPosition3D.y, Mathf.Round(nextPosition3D.z));
         Vector2Int nextPosition2D = gridManager.ConvertPositionMapToGrid(nextPosition3D);
         
-        Debug.LogWarning($"On veut bouger de ({transform.position.x},{transform.position.z}) à ({nextPosition3D.x},{nextPosition3D.y}, {nextPosition3D.z}) => ({nextPosition2D.x},{nextPosition2D.y})");
+        //Debug.LogWarning($"On veut bouger de ({transform.position.x},{transform.position.z}) à ({nextPosition3D.x},{nextPosition3D.y}, {nextPosition3D.z}) => ({nextPosition2D.x},{nextPosition2D.y})");
         
         if (CheckWalkableTile(nextPosition2D))
         {
             transform.position = nextPosition3D;
-            Debug.Log($"On bouge donc en ({transform.position.x},{transform.position.y},{transform.position.z})");
+            //Debug.LogWarning($"On bouge donc en ({transform.position.x},{transform.position.y},{transform.position.z})");
             OnPlayerMoved?.Invoke(nextPosition2D);
         }
     }
@@ -98,7 +100,17 @@ public class PlayerMovement : MonoBehaviour
     private bool CheckWalkableTile(Vector2Int postionToCheck)
     {
         bool isOk = gridManager.Grid[postionToCheck].TileState != TileState.Obstacle;
-        Debug.LogWarning($"case walkable = {isOk}");
+        //Debug.LogWarning($"case walkable = {isOk}");
         return isOk;
+    }
+
+    public void ToggleInputReading()
+    {
+        if (inputActionMap.enabled == true)
+        {
+            inputActionMap.Disable(); 
+        } else { 
+            inputActionMap.Enable(); 
+        }
     }
 }

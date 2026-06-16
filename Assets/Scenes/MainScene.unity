@@ -643,6 +643,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a03c04fa4c2c04a8b81651a27e472b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  gridManager: {fileID: 1395577054}
+  player: {fileID: 492068497}
 --- !u!4 &1051068165
 Transform:
   m_ObjectHideFlags: 0
@@ -753,10 +755,6 @@ PrefabInstance:
       propertyPath: gridManager
       value: 
       objectReference: {fileID: 1395577054}
-    - target: {fileID: 3694304927101687551, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
-      propertyPath: m_ProvidesContacts
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6923558153514969006, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: m_Name
       value: Player
