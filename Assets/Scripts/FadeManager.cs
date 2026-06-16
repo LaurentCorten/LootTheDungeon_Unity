@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class FadeManager : MonoBehaviour
 {
+    [SerializeField] GameObject buttonContainer;
     public CanvasGroup fadeCanvasGroup;
     public float fadeDuration = 0.5f;
 
@@ -32,6 +33,7 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
         fadeCanvasGroup.alpha = 0;
+        buttonContainer.SetActive(false);
     }
 
     public IEnumerator FadeOut()
@@ -46,5 +48,6 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
         fadeCanvasGroup.alpha = 1;
+        buttonContainer.SetActive(true);
     }
 }

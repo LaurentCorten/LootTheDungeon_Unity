@@ -461,10 +461,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
   ennemyPrefab: {fileID: 6258659200234999114, guid: fffd00a381a29e949804b19ae6d61cc1, type: 3}
-  player: {fileID: 492068497}
   obstaclePrefab: {fileID: 4301504756993581953, guid: 7a1022961e12e6a4f9ba9c09ccecac67, type: 3}
   tilePrefab: {fileID: 3385824547738649597, guid: 99363568233028543870a985dae67017, type: 3}
   exitPrefab: {fileID: 6164973154471636683, guid: aea86dcce6973dc4f8319b5e6bacb599, type: 3}
+  player: {fileID: 492068497}
   gridManager: {fileID: 1395577054}
   mapAnchor: {fileID: 2107300263}
 --- !u!1 &156082722
@@ -686,6 +686,7 @@ Transform:
   - {fileID: 1395577053}
   - {fileID: 44381924}
   - {fileID: 1051068165}
+  - {fileID: 741324977}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &732671821 stripped
@@ -693,6 +694,62 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7441822519436213195, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
   m_PrefabInstance: {fileID: 2787863319378908079}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &732671823 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 611598295391251945, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
+  m_PrefabInstance: {fileID: 2787863319378908079}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492068497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5eaf9e2c55a7f045a17d4efc3add8f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+--- !u!1 &741324976
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 741324977}
+  - component: {fileID: 741324978}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &741324977
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741324976}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 669655436}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &741324978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741324976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e56b61da8a0e834fbe2259526d4f04e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  resultContainer: {fileID: 981715130}
 --- !u!1 &758178646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,6 +1097,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
   gridManager: {fileID: 1395577054}
   player: {fileID: 492068497}
+  playerMovement: {fileID: 732671823}
+  gameManager: {fileID: 741324978}
 --- !u!4 &1051068165
 Transform:
   m_ObjectHideFlags: 0
@@ -1099,14 +1158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd9cedf734497044dbe7b6d53bcdcfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  _gridSize: {x: 12, y: 12}
-  _unityGridSize: 1
+  gameManager: {fileID: 741324978}
   mapAnchor: {fileID: 2107300263}
+  _unityGridSize: 1
+  _gridSize: {x: 12, y: 12}
+  _startExitOffset: 7
   _nbEncounters: 10
   _nbObstacles: 35
-  _startExitOffset: 7
-  startCoords: {x: 0, y: 0}
-  exitCoords: {x: 0, y: 0}
 --- !u!1 &1539508501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,7 +1361,7 @@ MonoBehaviour:
   m_fontSizeMax: 600
   m_fontStyle: 1
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 4096
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -1363,6 +1421,18 @@ PrefabInstance:
     - target: {fileID: 7724365710297511597, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
       propertyPath: m_Name
       value: QuitGameButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8333003890218747618, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
       propertyPath: m_Pivot.x
@@ -1535,6 +1605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f949de6acfc863543a23470478c169f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadeManager
+  buttonContainer: {fileID: 1539508501}
   fadeCanvasGroup: {fileID: 1764446375}
   fadeDuration: 0.5
 --- !u!225 &1764446375
@@ -1707,7 +1778,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2102034595}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -1915,6 +1986,34 @@ PrefabInstance:
     - target: {fileID: 7724365710297511597, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
       propertyPath: m_Name
       value: NewGameButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 741324978}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartNewLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245141776439704882, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8333003890218747618, guid: 73c760d3b4ff153418a1acdd2d3c36b7, type: 3}
       propertyPath: m_Pivot.x

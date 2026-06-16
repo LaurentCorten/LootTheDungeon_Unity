@@ -1,24 +1,41 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] Vector2Int _gridSize;
-    [SerializeField] int _unityGridSize;
-    Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
-
+    [SerializeField] GameManager gameManager;
     [SerializeField] Transform mapAnchor;
+    [SerializeField] int _unityGridSize;
+
+    [SerializeField] Vector2Int _gridSize;
+    [SerializeField] int _startExitOffset = 7;
     [SerializeField] int _nbEncounters = 5;
     [SerializeField] int _nbObstacles = 10;
-    [SerializeField] int _startExitOffset = 7;
     
+    Dictionary<Vector2Int, Tile> _grid = new Dictionary<Vector2Int, Tile>();
+    private Vector2Int startCoords;
+    private Vector2Int exitCoords;
+
+    public event Action OnGridCreated;
     public int UnityGridSize { get { return _unityGridSize; } }
     public Dictionary<Vector2Int, Tile> Grid { get { return _grid; } }
-    public Vector2Int startCoords;
-    public Vector2Int exitCoords;
+
+
 
     private void Awake()
+    {
+        gameManager.OnStartNewLevel += HandleStartNewGame;
+    }
+
+    private void HandleStartNewGame()
+    {
+        CreateNewGrid();
+        OnGridCreated?.Invoke();
+    }
+
+    private void CreateNewGrid()
     {
         bool hasPossiblePath = false;
 
@@ -29,7 +46,6 @@ public class GridManager : MonoBehaviour
             FillGrid();
             hasPossiblePath = CheckPathExists();
         } while (!hasPossiblePath);
-
     }
 
     private void InitiateGrid()

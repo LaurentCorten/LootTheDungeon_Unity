@@ -7,15 +7,17 @@ public class CombatManager : MonoBehaviour
 {
     [SerializeField] GridManager gridManager;
     [SerializeField] GameObject player;
-    PlayerMovement playerMovement;
+    [SerializeField] PlayerMovement playerMovement;
+    [SerializeField] GameManager gameManager;
+
     Hero heroUnit;
     Enemy enemyUnit;
-    float delay = 1.5f;
+
+    float delay = 0.5f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerMovement = player.GetComponent<PlayerMovement>();
         playerMovement.OnPlayerMoved += HandlePlayerMoved;
     }
 
@@ -34,7 +36,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    //TODO check comment bloquer le reste + faire le pendant visuel
+    //TODO check comment faire le pendant visuel
     IEnumerator StartCombat()
     {
         playerMovement.ToggleInputReading();
@@ -45,8 +47,12 @@ public class CombatManager : MonoBehaviour
         {
             Vector2Int gridPosition = gridManager.ConvertPositionMapToGrid(player.transform.position);
             gridManager.ClearOneTile(gridPosition);
+            playerMovement.ToggleInputReading();
+        } 
+        else
+        {
+            gameManager.EndLevel(false);
         }
-        playerMovement.ToggleInputReading();
     }
 
     private IEnumerator RunCombat()
