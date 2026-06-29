@@ -4,12 +4,25 @@ using UnityEngine;
 public class PlayerState : MonoBehaviour
 {
     [SerializeField] HeroData data;
+    [SerializeField] GameManager gameManager;
+
     public Hero hero;
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void OnEnable()
+    {
+        gameManager.OnStartNewLevel += HandleStartNewLevel;        
+    }
+
+    private void OnDisable()
+    {
+        gameManager.OnStartNewLevel -= HandleStartNewLevel;
+    }
+
+    private void HandleStartNewLevel()
     {
         hero = new Hero(
+
             data.archetype,
             data.heroName,
             data.hpMax,
@@ -21,11 +34,5 @@ public class PlayerState : MonoBehaviour
             data.damages,
             data.AC
             );
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

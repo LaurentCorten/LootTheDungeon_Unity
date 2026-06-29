@@ -80,14 +80,14 @@ public class GridManager : MonoBehaviour
         AssignManyTilesPositions(_nbEncounters, TileState.Encounter);        
     }
 
-    /// <summary>
-    /// Permet de remettre une tuile en position neutre. Pour retirer la sortie ou après résolution d'encounter.
-    /// </summary>
     private void ClearGrid()
     {
         _grid.Clear();
     }
 
+    /// <summary>
+    /// Permet de remettre une tuile en position neutre. Pour retirer la sortie si pzs de possiblePath ou après résolution d'encounter.
+    /// </summary>
     public void ClearOneTile(Vector2Int tilePostion)
     {
         Debug.Log($"Before Clear {tilePostion} => {_grid[tilePostion].TileState}");

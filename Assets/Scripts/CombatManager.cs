@@ -39,7 +39,7 @@ public class CombatManager : MonoBehaviour
     //TODO check comment faire le pendant visuel
     IEnumerator StartCombat()
     {
-        playerMovement.ToggleInputReading();
+        playerMovement.SetCanMove(false);
         Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
         yield return new WaitForSeconds(delay);
         yield return RunCombat();
@@ -47,7 +47,7 @@ public class CombatManager : MonoBehaviour
         {
             Vector2Int gridPosition = gridManager.ConvertPositionMapToGrid(player.transform.position);
             gridManager.ClearOneTile(gridPosition);
-            playerMovement.ToggleInputReading();
+            playerMovement.SetCanMove(true);
         } 
         else
         {

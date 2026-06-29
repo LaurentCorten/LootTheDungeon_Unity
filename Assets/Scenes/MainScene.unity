@@ -1911,6 +1911,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 611598295391251945, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 741324978}
+    - target: {fileID: 611598295391251945, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: gridManager
       value: 
       objectReference: {fileID: 1395577054}
@@ -1922,6 +1926,10 @@ PrefabInstance:
       propertyPath: inputActionMap.m_Name
       value: Input
       objectReference: {fileID: 0}
+    - target: {fileID: 5015027021670409134, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 741324978}
     - target: {fileID: 6923558153514969006, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: m_Name
       value: Player
