@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,12 +10,18 @@ public class CombatManager : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] GameManager gameManager;
+    [SerializeField] CombatVisual heroVisual;
+    [SerializeField] CombatVisual enemyVisual;
+    [SerializeField] CinemachineCamera cmExploration;
+    [SerializeField] CinemachineCamera cmCombat;
 
     float delay = 0.5f;
 
     //TODO check comment faire le pendant visuel
     public IEnumerator StartCombat(Hero playerUnit, Enemy enemyUnit)
     {
+        enemyVisual.Reset();
+        SwitchToCombatCamera();
         Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
         yield return new WaitForSeconds(delay);
         yield return RunCombat(playerUnit, enemyUnit);
@@ -23,6 +30,7 @@ public class CombatManager : MonoBehaviour
             Vector2Int gridPosition = gridManager.ConvertPositionMapToGrid(player.transform.position);
             gridManager.ClearOneTile(gridPosition);
             playerMovement.SetCanMove(true);
+            SwitchToExplorationCamera();
         } 
         else
         {
@@ -38,19 +46,30 @@ public class CombatManager : MonoBehaviour
         bool isHeroFirst = RollInit(playerUnit.DEX, enemyUnit.DEX);
         Fighter firstToPlay = isHeroFirst ? playerUnit : enemyUnit;
         Fighter secondToPlay = isHeroFirst ? enemyUnit : playerUnit;
+        CombatVisual firstVisual = isHeroFirst ? heroVisual : enemyVisual;
+        CombatVisual secondVisual = isHeroFirst ? enemyVisual : heroVisual;
         Debug.LogWarning($"{firstToPlay.Name} est à l'initiative");
         yield return new WaitForSeconds(delay);
 
         do
         {
-            Attack(firstToPlay, secondToPlay);
+            yield return StartCoroutine(Attack(firstToPlay, secondToPlay, firstVisual, secondVisual));
             yield return new WaitForSeconds(delay);
-            Attack(secondToPlay, firstToPlay);
+            yield return StartCoroutine(Attack(secondToPlay, firstToPlay, secondVisual, firstVisual));
             yield return new WaitForSeconds(delay);
             Debug.LogWarning($"Stats MaJ : Hero currentPV = {playerUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
             yield return new WaitForSeconds(delay);
         } while (playerUnit.IsAlive && enemyUnit.IsAlive);
-        Debug.LogWarning($"{(playerUnit.IsAlive ? $"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {playerUnit.CurrentHp} PV !" : $"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix")}");
+
+        if (!playerUnit.IsAlive)
+        {
+            yield return StartCoroutine(heroVisual.PlayDeath());
+            Debug.LogWarning($"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix");
+        } else
+        {
+            yield return StartCoroutine(enemyVisual.PlayDeath());
+            Debug.LogWarning($"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {playerUnit.CurrentHp} PV !");
+        }
 
         yield return null;
     }
@@ -98,16 +117,30 @@ public class CombatManager : MonoBehaviour
         return dmg;
     }
 
-    private void Attack(Fighter attacker, Fighter target)
+    private IEnumerator Attack(Fighter attacker, Fighter target, CombatVisual attackerVisual, CombatVisual targetVisual)
     {
+        yield return StartCoroutine(attackerVisual.PlayAttack());
+
         if (!RollTouch(attacker.MainStat, target.AC))
         {
+            yield return StartCoroutine(targetVisual.PlayDodge());
             Debug.LogWarning($"{attacker.Name} s'est lamentablement foiré et à complètement raté {target.Name}");
-            return;
+            yield break;
         }
+        yield return StartCoroutine(targetVisual.PlayHit());
+
         int dmg = RollDmg(attacker.Damages);
         target.AdaptLife(-dmg);
         Debug.LogWarning($"{attacker.Name} a fait {dmg} dégât à {target.Name}");
+        yield return null;
+    }
+    private void SwitchToCombatCamera()
+    {
+        cmCombat.Priority = 20;
     }
 
+    private void SwitchToExplorationCamera()
+    {
+        cmCombat.Priority = 0;
+    }
 }

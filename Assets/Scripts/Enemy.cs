@@ -11,7 +11,7 @@ public class Enemy: Fighter
     public Enemy(string archetype, string name, int hpMax, int con, int str, int dex, int intel, int mainStat, string damages, int ac, int bonusAtt, int score, Size size) : base(archetype, name, hpMax, con, str, dex, intel, mainStat, damages, ac)
     {
         BonusAtt = bonusAtt;
-        Score = Score;
+        Score = score;
         EnemySize = size;
     }
 
