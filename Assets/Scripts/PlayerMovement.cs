@@ -5,13 +5,14 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public event Action<Vector2Int> OnPlayerMoved;
+
     public InputActionAsset inputActions;
     public InputActionMap inputActionMap;
     public GridManager gridManager;
+    [SerializeField] GameManager gameManager;
 
     private InputAction _moveAction;
     private InputAction _lookAction;
-
     private Vector2 _moveDir;
     private Vector2 _lookDir;
 
@@ -34,15 +35,23 @@ public class PlayerMovement : MonoBehaviour
         _lookAction = inputActions.FindAction("Look");
         _lookAction.performed += OnLookPerformed;
         _lookAction.canceled += OnLookCanceled;
+
+        gameManager.OnStartNewLevel += HandleStartNewLevel;
     }
+
     private void OnDestroy()
     {
         _moveAction.performed -= OnMovePerformed;
         _moveAction.canceled -= OnMoveCanceled;
         _lookAction.performed -= OnLookPerformed;
         _lookAction.canceled -= OnLookCanceled;
+        gameManager.OnStartNewLevel -= HandleStartNewLevel;
     }
-    
+
+    private void HandleStartNewLevel()
+    {
+            SetCanMove(true);
+    }
     
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
@@ -104,13 +113,17 @@ public class PlayerMovement : MonoBehaviour
         return isOk;
     }
 
-    public void ToggleInputReading()
+    public void SetCanMove(bool canMove)
     {
-        if (inputActionMap.enabled == true)
+        switch(canMove)
         {
-            inputActionMap.Disable(); 
-        } else { 
-            inputActionMap.Enable(); 
+            case true:
+                inputActionMap.Enable();
+                break;
+            case false:
+                inputActionMap.Disable();
+                break;
+                
         }
     }
 }

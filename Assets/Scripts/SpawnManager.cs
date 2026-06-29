@@ -1,14 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject ennemyPrefab;
-    public GameObject player;
-    public GameObject obstaclePrefab;
-    public GameObject tilePrefab;
-    public GameObject exitPrefab;
+    [SerializeField] GameObject ennemyPrefab;
+    [SerializeField] GameObject obstaclePrefab;
+    [SerializeField] GameObject tilePrefab;
+    [SerializeField] GameObject exitPrefab;
+    [SerializeField] GameObject player;
 
     [SerializeField] GridManager gridManager;
     [SerializeField] Transform mapAnchor;
@@ -17,11 +18,22 @@ public class SpawnManager : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        gridManager.OnGridCreated += HandleGridCreated;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+    }
+
+    private void HandleGridCreated()
+    {
+        ClearGridObjects();
+        SpawnGridObjects();
+        StartCoroutine(LinkEnemiesToTiles());
+    }
+
+    private void SpawnGridObjects()
     {
         foreach (KeyValuePair<Vector2Int, Tile> kvp in gridManager.Grid)
         {
@@ -44,11 +56,11 @@ public class SpawnManager : MonoBehaviour
                     spawnObject = null;
                     break;
             }
-            
+
             Vector3 spawnPositionModifier = gridManager.ConvertPositionGridToMap(kvp.Key);
-            
+
             GameObject newTile = Instantiate(tilePrefab, tilePrefab.transform.position + spawnPositionModifier, tilePrefab.transform.rotation, mapAnchor);
-            
+
             if (spawnObject != null)
             {
                 if (spawnObject == player)
@@ -60,15 +72,14 @@ public class SpawnManager : MonoBehaviour
                 {
                     GameObject newObject = Instantiate(spawnObject, spawnObject.transform.position + spawnPositionModifier, spawnObject.transform.rotation);
                     newObject.transform.SetParent(newTile.transform, true);
-                    
-                    if(kvp.Value.TileState == TileState.Encounter)
+
+                    if (kvp.Value.TileState == TileState.Encounter)
                     {
                         _tempLink.Add(kvp.Value, newObject.GetComponent<EnemyState>());
                     }
                 }
             }
         }
-        StartCoroutine(LinkEnemiesToTiles());
     }
 
     private IEnumerator LinkEnemiesToTiles()
@@ -78,6 +89,14 @@ public class SpawnManager : MonoBehaviour
         foreach (var kvp in _tempLink)
         {
            kvp.Key.SetEnemy(kvp.Value);
+        }
+    }
+
+    private void ClearGridObjects()
+    { 
+        foreach(Transform child in mapAnchor.transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 }
