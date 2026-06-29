@@ -10,40 +10,15 @@ public class CombatManager : MonoBehaviour
     [SerializeField] PlayerMovement playerMovement;
     [SerializeField] GameManager gameManager;
 
-    Hero heroUnit;
-    Enemy enemyUnit;
-
     float delay = 0.5f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        playerMovement.OnPlayerMoved += HandlePlayerMoved;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void HandlePlayerMoved(Vector2Int playerPosition)
-    {
-        if (gridManager.Grid[playerPosition].TileState == TileState.Encounter)
-        {                
-            enemyUnit = gridManager.Grid[playerPosition].Enemy;
-            StartCoroutine(StartCombat());
-        }
-    }
-
     //TODO check comment faire le pendant visuel
-    IEnumerator StartCombat()
+    public IEnumerator StartCombat(Hero playerUnit, Enemy enemyUnit)
     {
-        playerMovement.SetCanMove(false);
         Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
         yield return new WaitForSeconds(delay);
-        yield return RunCombat();
-        if (heroUnit.IsAlive)
+        yield return RunCombat(playerUnit, enemyUnit);
+        if (playerUnit.IsAlive) //? À faire gérer par PlayerState ? Ou GameManager via event ?
         {
             Vector2Int gridPosition = gridManager.ConvertPositionMapToGrid(player.transform.position);
             gridManager.ClearOneTile(gridPosition);
@@ -55,15 +30,14 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private IEnumerator RunCombat()
+    private IEnumerator RunCombat(Hero playerUnit, Enemy enemyUnit)
     {
-        heroUnit = player.GetComponent<PlayerState>().hero;
-        Debug.LogWarning($"Stats de départ : Hero currentPV = {heroUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
+        Debug.LogWarning($"Stats de départ : Hero currentPV = {playerUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
         yield return new WaitForSeconds(delay);
 
-        bool isHeroFirst = RollInit(heroUnit.DEX, enemyUnit.DEX);
-        Fighter firstToPlay = isHeroFirst ? heroUnit : enemyUnit;
-        Fighter secondToPlay = isHeroFirst ? enemyUnit : heroUnit;
+        bool isHeroFirst = RollInit(playerUnit.DEX, enemyUnit.DEX);
+        Fighter firstToPlay = isHeroFirst ? playerUnit : enemyUnit;
+        Fighter secondToPlay = isHeroFirst ? enemyUnit : playerUnit;
         Debug.LogWarning($"{firstToPlay.Name} est à l'initiative");
         yield return new WaitForSeconds(delay);
 
@@ -73,10 +47,10 @@ public class CombatManager : MonoBehaviour
             yield return new WaitForSeconds(delay);
             Attack(secondToPlay, firstToPlay);
             yield return new WaitForSeconds(delay);
-            Debug.LogWarning($"Stats MaJ : Hero currentPV = {heroUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
+            Debug.LogWarning($"Stats MaJ : Hero currentPV = {playerUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
             yield return new WaitForSeconds(delay);
-        } while (heroUnit.IsAlive && enemyUnit.IsAlive);
-        Debug.LogWarning($"{(heroUnit.IsAlive ? $"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {heroUnit.CurrentHp} PV !" : $"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix")}");
+        } while (playerUnit.IsAlive && enemyUnit.IsAlive);
+        Debug.LogWarning($"{(playerUnit.IsAlive ? $"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {playerUnit.CurrentHp} PV !" : $"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix")}");
 
         yield return null;
     }

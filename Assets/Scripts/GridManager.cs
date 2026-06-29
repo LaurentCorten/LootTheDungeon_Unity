@@ -80,39 +80,39 @@ public class GridManager : MonoBehaviour
         AssignManyTilesPositions(_nbEncounters, TileState.Encounter);        
     }
 
-    private void ClearGrid()
-    {
-        _grid.Clear();
-    }
-
     /// <summary>
     /// Permet de remettre une tuile en position neutre. Pour retirer la sortie si pzs de possiblePath ou après résolution d'encounter.
     /// </summary>
     public void ClearOneTile(Vector2Int tilePostion)
     {
-        Debug.Log($"Before Clear {tilePostion} => {_grid[tilePostion].TileState}");
+        //Debug.Log($"Before Clear {tilePostion} => {_grid[tilePostion].TileState}");
         _grid[tilePostion] = new Tile(tilePostion);
-        Debug.Log($"After Clear {tilePostion} => {_grid[tilePostion].TileState}");
+        //Debug.Log($"After Clear {tilePostion} => {_grid[tilePostion].TileState}");
+    }
+
+    private void ClearGrid()
+    {
+        _grid.Clear();
     }
 
     private int CheckMinMvmt(Vector2Int pos1, Vector2Int pos2)
     {
         int tilesCount = Mathf.Abs(pos1.x - pos2.x) + Mathf.Abs(pos1.y - pos2.y);
-        Debug.Log($"TileCount Start-Exit = {tilesCount}");
+        //Debug.Log($"TileCount Start-Exit = {tilesCount}");
         return tilesCount;
     }
 
     private Vector2Int GetFarEnoughExit()
     {
         Vector2Int possibleExit = AssignOneTilePosition(TileState.Exit);
-        Debug.Log($"PossibleExit : ({possibleExit.x};{possibleExit.y})");
+        //Debug.Log($"PossibleExit : ({possibleExit.x};{possibleExit.y})");
         if(CheckMinMvmt(startCoords, possibleExit) < _startExitOffset)
         {
-            Debug.Log($"Ecart Start-Exit < {_startExitOffset}");
+            //Debug.Log($"Ecart Start-Exit < {_startExitOffset}");
             ClearOneTile(possibleExit);
             possibleExit = GetFarEnoughExit();
         }
-        Debug.Log($"Ecart Start-Exit > {_startExitOffset}");
+        //Debug.Log($"Ecart Start-Exit > {_startExitOffset}");
         return possibleExit;
     }
 
@@ -135,7 +135,7 @@ public class GridManager : MonoBehaviour
 
             // Chope les premières coordonées à étudier
             centralNode = tilesToCheck[0];
-            Debug.Log($"tuile étudiée = ({centralNode.x},{centralNode.y})");
+            //Debug.Log($"tuile étudiée = ({centralNode.x},{centralNode.y})");
 
             // Vérifie les 4 directions
             foreach (var dir in directions)
@@ -143,7 +143,7 @@ public class GridManager : MonoBehaviour
                 // variables locales
                 Tile workingTile;
                 Vector2Int workingNode = centralNode + dir;
-                Debug.Log($"tuile contrôlée = ({workingNode.x},{workingNode.y})");
+                //Debug.Log($"tuile contrôlée = ({workingNode.x},{workingNode.y})");
 
                 // Tests de garde pour éviter les tests redondants
                 if (tilesChecked.Contains(workingNode)) continue;
@@ -151,13 +151,13 @@ public class GridManager : MonoBehaviour
 
                 // Chope la tuile
                 _grid.TryGetValue(workingNode, out workingTile);
-                Debug.Log($"Tuile récupérée, status = {workingTile.TileState}");
+                //Debug.Log($"Tuile récupérée, status = {workingTile.TileState}");
                 
                 // Vérifie si c'est la sortie
                 if(workingTile.TileState == TileState.Exit)
                 {
                     isPathFound = true;
-                    Debug.Log("C'était bien la sortie :D");
+                    //Debug.Log("C'était bien la sortie :D");
                     break;
                 }
 
@@ -165,18 +165,18 @@ public class GridManager : MonoBehaviour
                 if (workingTile.TileState != TileState.Obstacle)
                 {
                     tilesToCheck.Add(workingNode);
-                    Debug.Log("Ce n'est pas la sortie ni un obstacle, sera étudiée plus tard");
+                    //Debug.Log("Ce n'est pas la sortie ni un obstacle, sera étudiée plus tard");
                 }
             }
 
             // Déplace la tuile des "à étudier" aux "étudiées"
             tilesChecked.Add(centralNode);
             tilesToCheck.Remove(centralNode);
-            Debug.Log($"Tuile déplacée de liste");
+            //Debug.Log($"Tuile déplacée de liste");
 
         } while (!isPathFound && tilesToCheck.Count > 0);
 
-        Debug.Log($"Sortie de boucle do/while, isPathFound = {isPathFound}");
+        //Debug.Log($"Sortie de boucle do/while, isPathFound = {isPathFound}");
         return isPathFound;
     }
 
@@ -188,12 +188,12 @@ public class GridManager : MonoBehaviour
         {
             Vector2Int tilePosition = PickNewAvailablePosition();
             Tile tile = new Tile(tilePosition, tileState);
-            Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
+            //Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
             //_grid.Remove(tilePosition);
             //_grid.Add(tile.Coord, tile);
             _grid[tile.Coord] = tile; //? Préferable ?
             tilesCoordList.Add(tile.Coord);
-            Debug.Log($"Dans le Grid : {_grid[tile.Coord].TileState} {i + 1} : ({_grid[tile.Coord].Coord.x};{_grid[tile.Coord].Coord.y})");
+            //Debug.Log($"Dans le Grid : {_grid[tile.Coord].TileState} {i + 1} : ({_grid[tile.Coord].Coord.x};{_grid[tile.Coord].Coord.y})");
         }
         return tilesCoordList;
     }
@@ -202,11 +202,11 @@ public class GridManager : MonoBehaviour
     {
         Vector2Int tilePosition = PickNewAvailablePosition();
         Tile tile = new Tile(tilePosition, tileState);
-        Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
+        //Debug.Log($"Tile intels = ({tile.Coord.x},{tile.Coord.y}) comme {tile.TileState}");
         //_grid.Remove(tilePosition);
         //_grid.Add(tile.Coord, tile);
         _grid[tile.Coord] = tile; //? Préferable ?
-        Debug.Log($"Dans le Grid : {_grid[tile.Coord].TileState} : ({_grid[tile.Coord].Coord.x};{_grid[tile.Coord].Coord.y})");
+        //Debug.Log($"Dans le Grid : {_grid[tile.Coord].TileState} : ({_grid[tile.Coord].Coord.x};{_grid[tile.Coord].Coord.y})");
 
         return tilePosition;
     }
@@ -225,19 +225,19 @@ public class GridManager : MonoBehaviour
         {
             newPostion.x = Random.Range(1,(_gridSize.x-1));
             newPostion.y = Random.Range(1,(_gridSize.y-1));
-            Debug.Log($"newPosition coords = ({newPostion.x};{newPostion.y})");
+            //Debug.Log($"newPosition coords = ({newPostion.x};{newPostion.y})");
 
             bool successfulExtraction = _grid.TryGetValue(newPostion, out testedTile);
-            Debug.Log($"successfulExtraction = {successfulExtraction} et testedTile status = {testedTile.TileState}");
+            //Debug.Log($"successfulExtraction = {successfulExtraction} et testedTile status = {testedTile.TileState}");
 
             isValidPosition = testedTile.TileState == TileState.Available;
-            Debug.Log($"newPosition est valid = {isValidPosition}");
+            //Debug.Log($"newPosition est valid = {isValidPosition}");
 
         } while (!isValidPosition);
 
         if(!_grid.ContainsKey(newPostion))
         {
-            Debug.Log($"Position tirée = ({newPostion.x},{newPostion.y}) est non valide !");
+            //Debug.Log($"Position tirée = ({newPostion.x},{newPostion.y}) est non valide !");
             return new Vector2Int (-1, -1);
         }
 

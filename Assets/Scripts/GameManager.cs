@@ -8,18 +8,6 @@ public class GameManager : MonoBehaviour //? Static ???
 
     [SerializeField] GameObject resultContainer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void StartNewLevel()
     {
         OnStartNewLevel?.Invoke();
@@ -30,6 +18,10 @@ public class GameManager : MonoBehaviour //? Static ???
     {
         resultContainer.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = isPlayerAlive ? "Victory" : "Game Over";
         StartCoroutine(FadeManager.instance.FadeOut());
+    }
 
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject ennemyPrefab;
     [SerializeField] GameObject obstaclePrefab;
     [SerializeField] GameObject tilePrefab;
-    [SerializeField] GameObject exitPrefab;
+    [SerializeField] GameObject exit;
     [SerializeField] GameObject player;
 
     [SerializeField] GridManager gridManager;
@@ -47,7 +47,7 @@ public class SpawnManager : MonoBehaviour
                     spawnObject = ennemyPrefab;
                     break;
                 case TileState.Exit:
-                    spawnObject = exitPrefab;
+                    spawnObject = exit;
                     break;
                 case TileState.Start:
                     spawnObject = player;
@@ -63,10 +63,10 @@ public class SpawnManager : MonoBehaviour
 
             if (spawnObject != null)
             {
-                if (spawnObject == player)
+                if (spawnObject == player || spawnObject == exit)
                 {
                     Vector3 spawnPostion = new Vector3(0, player.transform.position.y, 0) + spawnPositionModifier;
-                    player.transform.position = spawnPostion;
+                    spawnObject.transform.position = spawnPostion;
                 }
                 else
                 {

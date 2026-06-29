@@ -6,9 +6,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public event Action<Vector2Int> OnPlayerMoved;
 
-    public InputActionAsset inputActions;
-    public InputActionMap inputActionMap;
-    public GridManager gridManager;
+    [SerializeField] InputActionAsset inputActions;
+    [SerializeField] InputActionMap inputActionMap;
+    [SerializeField] GridManager gridManager;
     [SerializeField] GameManager gameManager;
 
     private InputAction _moveAction;
