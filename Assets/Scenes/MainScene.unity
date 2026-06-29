@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
-  m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_AmbientIntensity: 0
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -35,7 +35,7 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
+  m_ReflectionIntensity: 0
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &17888653
 Light:
   m_ObjectHideFlags: 0
@@ -146,15 +146,15 @@ Light:
   m_GameObject: {fileID: 17888652}
   m_Enabled: 1
   serializedVersion: 12
-  m_Type: 1
+  m_Type: 2
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
-  m_Range: 10
+  m_Range: 2
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 39996412}
   - component: {fileID: 39996415}
   - component: {fileID: 39996416}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -283,8 +283,8 @@ Camera:
   m_GameObject: {fileID: 39996411}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -363,7 +363,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -1996,14 +1996,6 @@ PrefabInstance:
       propertyPath: gridManager
       value: 
       objectReference: {fileID: 1395577054}
-    - target: {fileID: 611598295391251945, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
-      propertyPath: inputActionMap.m_Id
-      value: e89dd6dc-27cb-4489-b887-11f337311e2e
-      objectReference: {fileID: 0}
-    - target: {fileID: 611598295391251945, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
-      propertyPath: inputActionMap.m_Name
-      value: Input
-      objectReference: {fileID: 0}
     - target: {fileID: 5015027021670409134, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: gameManager
       value: 
@@ -2016,10 +2008,6 @@ PrefabInstance:
       propertyPath: combatManager
       value: 
       objectReference: {fileID: 1051068164}
-    - target: {fileID: 5015027021670409134, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
-      propertyPath: playerMovement
-      value: 
-      objectReference: {fileID: 732671823}
     - target: {fileID: 6923558153514969006, guid: bdc236ff63d150843ac66d2261b4b2db, type: 3}
       propertyPath: m_Name
       value: Player
