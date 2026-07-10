@@ -7,6 +7,12 @@ public class CombatVisual : MonoBehaviour
     [Header("Animator")]
     [SerializeField] Animator animator;
 
+    [Header("Sound")]
+    [SerializeField] AudioClip audioDodge;
+    [SerializeField] AudioClip audioGetHit;
+    [SerializeField] AudioClip audioDies;
+
+
     private static readonly int AttackTrigger = Animator.StringToHash("Attack");
     private static readonly int HitTrigger = Animator.StringToHash("Hit");
     private static readonly int DeathTrigger = Animator.StringToHash("Death");
@@ -31,6 +37,7 @@ public class CombatVisual : MonoBehaviour
     private Material _material;
     private Color _originalColor;
     private bool _impactReached; // Mis a true par l'Animation Event place sur le clip d'attaque, au moment de l'impact visuel
+    private AudioSource _audioSource;
 
     private void Start()
     {
@@ -42,6 +49,8 @@ public class CombatVisual : MonoBehaviour
         {
             animator = GetComponentInChildren<Animator>();
         }
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public IEnumerator PlayAttack()
@@ -57,11 +66,11 @@ public class CombatVisual : MonoBehaviour
             // On attend le vrai event d'impact pose sur le clip d'attaque
             yield return new WaitUntil(() => _impactReached);
         }
-        else
-        {
-            // Pas d'Animator (ex: capsule de test) : on simule l'impact a l'arrivee du bump
-            yield return new WaitUntil(() => Vector3.Distance(transform.position, target) < 0.01f);
-        }
+        //else
+        //{
+        //    // Pas d'Animator (ex: capsule de test) : on simule l'impact a l'arrivee du bump
+        //    yield return new WaitUntil(() => Vector3.Distance(transform.position, target) < 0.01f);
+        //}
 
         // Le retour a la position d'origine n'est pas attendu : il se joue en parallele
         // de la reaction de la cible, ce qui est voulu (cf notes de design).
@@ -82,6 +91,7 @@ public class CombatVisual : MonoBehaviour
 
         Vector3 target = _originPosition + hitDirection * hitDistance;
         yield return MoveToPosition(target, hitSpeed);
+        _audioSource.PlayOneShot(audioGetHit);
         yield return MoveToPosition(_originPosition, hitSpeed);
 
     }
@@ -91,6 +101,7 @@ public class CombatVisual : MonoBehaviour
         Vector3 target = _originPosition + hitDirection * dodgeDistance;
         yield return MoveToPosition(target, hitSpeed);
 
+        _audioSource.PlayOneShot(audioDodge);
         yield return new WaitForSeconds(hitFlashDuration);
 
         yield return MoveToPosition(_originPosition, hitSpeed);
@@ -99,6 +110,7 @@ public class CombatVisual : MonoBehaviour
     public IEnumerator PlayDeath()
     {
         TriggerAnimator(DeathTrigger);
+        _audioSource.PlayOneShot(audioDies);
 
         float t = 0;
         Color start = _material.color;
