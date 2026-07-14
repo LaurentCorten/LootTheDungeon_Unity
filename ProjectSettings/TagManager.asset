@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - target
+  - Floor
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,9 +13,9 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Wall
+  - camera
+  - Glow
   - 
   - 
   - 
