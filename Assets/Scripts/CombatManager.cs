@@ -1,23 +1,54 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 [ExecuteAlways]
 public class CombatManager : MonoBehaviour
 {
+    [Header("References flux de jeu")]
+    [SerializeField] GameManager gameManager;
     [SerializeField] GridManager gridManager;
     [SerializeField] GameObject player;
     [SerializeField] PlayerMovement playerMovement;
-    [SerializeField] GameManager gameManager;
 
-    float delay = 0.5f;
+    [Header("Combat")]
+    [SerializeField] CombatSequencer sequencer;
 
-    //TODO check comment faire le pendant visuel
+    [Header("Cameras")]
+    [SerializeField] CinemachineCamera cmExploration;
+    [SerializeField] CinemachineCamera cmCombat;
+
+    [Header("HUD")]
+    [SerializeField] HealthBarUI heroHealthBar;
+    [SerializeField] HealthBarUI enemyHealthBar;
+    [SerializeField] GameObject enemyHudPanel;
+
+    [Header("Timing")]
+    [SerializeField] float delay = 0.8f;
+
+    private CombatResolver _resolver = new CombatResolver();
+
+
+    // --- Point d'entrée appelé par PlayerState ---
     public IEnumerator StartCombat(Hero playerUnit, Enemy enemyUnit)
     {
+        sequencer.ResetVisuals();
+        SwitchToCombatCamera();
+
+        // Init HUD combat
+        heroHealthBar.SetHealth(playerUnit.CurrentHp, playerUnit.HpMax);
+        enemyHealthBar.SetHealth(enemyUnit.CurrentHp, enemyUnit.HpMax);
+        enemyHudPanel.SetActive(true);
+
         Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
         yield return new WaitForSeconds(delay);
+
         yield return RunCombat(playerUnit, enemyUnit);
+
+        enemyHudPanel.SetActive(false);
+        SwitchToExplorationCamera();
+
         if (playerUnit.IsAlive) //? À faire gérer par PlayerState ? Ou GameManager via event ?
         {
             Vector2Int gridPosition = gridManager.ConvertPositionMapToGrid(player.transform.position);
@@ -30,84 +61,91 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    // --- Boucle de combat ---
     private IEnumerator RunCombat(Hero playerUnit, Enemy enemyUnit)
     {
         Debug.LogWarning($"Stats de départ : Hero currentPV = {playerUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
         yield return new WaitForSeconds(delay);
 
-        bool isHeroFirst = RollInit(playerUnit.DEX, enemyUnit.DEX);
+        bool isHeroFirst = _resolver.RollInit(playerUnit.DEX, enemyUnit.DEX);
         Fighter firstToPlay = isHeroFirst ? playerUnit : enemyUnit;
         Fighter secondToPlay = isHeroFirst ? enemyUnit : playerUnit;
+
+
         Debug.LogWarning($"{firstToPlay.Name} est à l'initiative");
         yield return new WaitForSeconds(delay);
 
         do
         {
-            Attack(firstToPlay, secondToPlay);
+            yield return StartCoroutine(Attack(firstToPlay, secondToPlay, isHeroFirst));
             yield return new WaitForSeconds(delay);
-            Attack(secondToPlay, firstToPlay);
+            yield return StartCoroutine(Attack(secondToPlay, firstToPlay, !isHeroFirst));
             yield return new WaitForSeconds(delay);
+
             Debug.LogWarning($"Stats MaJ : Hero currentPV = {playerUnit.CurrentHp} - Enemy currentPV = {enemyUnit.CurrentHp}");
             yield return new WaitForSeconds(delay);
+
         } while (playerUnit.IsAlive && enemyUnit.IsAlive);
-        Debug.LogWarning($"{(playerUnit.IsAlive ? $"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {playerUnit.CurrentHp} PV !" : $"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix")}");
+
+        // PlayDeath se joue apres la boucle complete, sur l'etat final IsAlive.
+        // Mort simultanee possible (cf GDD) : on joue les deux deaths.
+        if (!playerUnit.IsAlive)
+        {
+            yield return StartCoroutine(sequencer.PlayDeath(true));
+            Debug.LogWarning($"Vous avez fait ce que vous avez pu mais {enemyUnit.Name} a eu raison de vous. C'était le combat de trop. Puissiez-vous reposez en paix");
+        } else
+        {
+            Debug.LogWarning($"Vous vous êtes vaillamment battu et {enemyUnit.Name} gît davant vous dans une mare de sang. En espérant que ça continue ainsi. Il vous reste {playerUnit.CurrentHp} PV !");
+        }
+
+        if (!enemyUnit.IsAlive)
+            yield return StartCoroutine(sequencer.PlayDeath(false));
+
 
         yield return null;
     }
 
-    /// <summary>
-    /// Vérifie qui a l'initiative en fonction des stats de Dexterité respectivement du Hero et du Mob, altéré par un jet de D20.
-    /// </summary>
-    /// <param name="heroDEX">Valeur de la stat de Dexterité du Hero</param>
-    /// <param name="mobDEX">Valeur de la stat de Dexterité du Hero</param>
-    /// <returns>Retourne vrai si le Hero à l'initiative, faux si c'est le Mob.</returns>
-    private bool RollInit(int heroDEX, int mobDEX)
-    {
-        int dHero = Random.Range(1, 21);
-        int dMob = Random.Range(1, 21);
-        bool heroFirst = ((dHero + (heroDEX / 2)) >= (dMob + (mobDEX / 2))) ? true : false;
-        return (heroFirst);
-    }
+
+    // --- Attaque unitaire : resolution + sequencement visuel ---
 
     /// <summary>
-    /// Vérifie si l'attaque tentée atteind la cible.
+    /// Orchestre une attaque : visuel d'attaque, résolution des calculs, visuel de réaction.
+    /// isHeroAttacking identifie qui attaque pour que le Sequencer sache quel visuel animer.
     /// </summary>
-    /// <param name="attMainStat">Valeur de la stat principale de l'attaquant</param>
-    /// <param name="defAC">Valeur de la classe d'armure du défenseur</param>
-    /// <returns>Retourne vrai si l'attaque touche la cible, faux si c'est un échec</returns>
-    private bool RollTouch(int attMainStat, int defAC)
+    private IEnumerator Attack(Fighter attacker, Fighter target, bool isHeroAttacking)
     {
-        int dAtt = Random.Range(1, 21);
-        bool touche = ((dAtt + (attMainStat / 2)) > defAC) ? true : false;
-        return (touche);
-    }
+        // 1. Animation d'attaque — se termine a l'impact
+        yield return StartCoroutine(sequencer.PlayAttack(isHeroAttacking));
 
-    /// <summary>
-    /// Permet de connaitre la quantité de dégâts à appliquer (si le RollTouch est revenu positif).
-    /// </summary>
-    /// <param name="attDmg">Nombre x de dés à y faces au format "xdy"</param>
-    /// <returns>Retourne donc le nombre de dégâts subit par le défenseur</returns>
-    private int RollDmg(string attDmg) //TODO : Sortir les "+x" des dmg mobs in DB
-    {
-        int dmg = 0;
-        string[] subs = attDmg.Split('d');
-        for (int i = 0; i < int.Parse(subs[0]); i++)
+        // 2. Resolution des calculs (CombatManager garde le Resolver)
+        AttackResultDto result = _resolver.ResolveAttack(attacker, target);
+
+        // 3. MaJ HUD de la cible (au moment de l'impact, si touche)
+        if (result.DidHit)
         {
-            dmg += Random.Range(1, int.Parse(subs[1]) + 1);
+            if (isHeroAttacking)
+                enemyHealthBar.SetHealth(target.CurrentHp, target.HpMax);
+            else
+                heroHealthBar.SetHealth(target.CurrentHp, target.HpMax);
         }
-        return dmg;
+
+        // 4. Reaction de la cible
+        yield return StartCoroutine(sequencer.PlayReaction(isHeroAttacking, result.DidHit));
+
+        Debug.LogWarning(result.DidHit
+            ? $"{attacker.Name} a fait {result.Damage} dégâts à {target.Name}"
+            : $"{attacker.Name} s'est lamentablement foiré et à complètement raté {target.Name}");
     }
 
-    private void Attack(Fighter attacker, Fighter target)
+
+    // --- Caméras (candidats futur SceneFlowManager ou CameraManager) ---
+    private void SwitchToCombatCamera()
     {
-        if (!RollTouch(attacker.MainStat, target.AC))
-        {
-            Debug.LogWarning($"{attacker.Name} s'est lamentablement foiré et à complètement raté {target.Name}");
-            return;
-        }
-        int dmg = RollDmg(attacker.Damages);
-        target.AdaptLife(-dmg);
-        Debug.LogWarning($"{attacker.Name} a fait {dmg} dégât à {target.Name}");
+        cmCombat.Priority = 20;
     }
 
+    private void SwitchToExplorationCamera()
+    {
+        cmCombat.Priority = 0;
+    }
 }

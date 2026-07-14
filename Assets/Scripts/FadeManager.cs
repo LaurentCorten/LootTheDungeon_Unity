@@ -4,7 +4,8 @@ using UnityEngine;
 public class FadeManager : MonoBehaviour
 {
     [SerializeField] GameObject buttonContainer;
-    public CanvasGroup fadeCanvasGroup;
+    public CanvasGroup menuScreen;
+    public CanvasGroup gameHUD;
     public float fadeDuration = 0.5f;
 
     public static FadeManager instance;
@@ -23,31 +24,37 @@ public class FadeManager : MonoBehaviour
 
     public IEnumerator FadeIn()
     {
-        fadeCanvasGroup.alpha = 1;
+        menuScreen.alpha = 1;
+        gameHUD.alpha = 0;
         float t = 0;
         
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            fadeCanvasGroup.alpha = 1 - (t/ fadeDuration);
+            menuScreen.alpha = 1 - (t/ fadeDuration);
+            gameHUD.alpha = t / fadeDuration;
             yield return null;
         }
-        fadeCanvasGroup.alpha = 0;
+        menuScreen.alpha = 0;
+        gameHUD.alpha = 1;
         buttonContainer.SetActive(false);
     }
 
     public IEnumerator FadeOut()
     {
-        fadeCanvasGroup.alpha = 0;
+        menuScreen.alpha = 0;
+        gameHUD.alpha = 1;
         float t = 0;
         
         while (t < fadeDuration)
         {
             t += Time.deltaTime;
-            fadeCanvasGroup.alpha = t/ fadeDuration;
+            menuScreen.alpha = t/ fadeDuration;
+            gameHUD.alpha = 1 - (t / fadeDuration);
             yield return null;
         }
-        fadeCanvasGroup.alpha = 1;
+        menuScreen.alpha = 1;
+        gameHUD.alpha = 0;
         buttonContainer.SetActive(true);
     }
 }
