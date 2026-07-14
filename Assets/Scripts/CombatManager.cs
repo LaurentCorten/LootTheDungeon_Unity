@@ -19,6 +19,11 @@ public class CombatManager : MonoBehaviour
     [SerializeField] CinemachineCamera cmExploration;
     [SerializeField] CinemachineCamera cmCombat;
 
+    [Header("HUD")]
+    [SerializeField] HealthBarUI heroHealthBar;
+    [SerializeField] HealthBarUI enemyHealthBar;
+    [SerializeField] GameObject enemyHudPanel;
+
     [Header("Timing")]
     [SerializeField] float delay = 0.8f;
 
@@ -31,11 +36,17 @@ public class CombatManager : MonoBehaviour
         sequencer.ResetVisuals();
         SwitchToCombatCamera();
 
+        // Init HUD combat
+        heroHealthBar.SetHealth(playerUnit.CurrentHp, playerUnit.HpMax);
+        enemyHealthBar.SetHealth(enemyUnit.CurrentHp, enemyUnit.HpMax);
+        enemyHudPanel.SetActive(true);
+
         Debug.LogWarning($"Un {enemyUnit.Archetype} sauvage est apparut. Préparez vous aux combat !");
         yield return new WaitForSeconds(delay);
 
         yield return RunCombat(playerUnit, enemyUnit);
 
+        enemyHudPanel.SetActive(false);
         SwitchToExplorationCamera();
 
         if (playerUnit.IsAlive) //? À faire gérer par PlayerState ? Ou GameManager via event ?
@@ -109,7 +120,16 @@ public class CombatManager : MonoBehaviour
         // 2. Resolution des calculs (CombatManager garde le Resolver)
         AttackResultDto result = _resolver.ResolveAttack(attacker, target);
 
-        // 3. Reaction de la cible
+        // 3. MaJ HUD de la cible (au moment de l'impact, si touche)
+        if (result.DidHit)
+        {
+            if (isHeroAttacking)
+                enemyHealthBar.SetHealth(target.CurrentHp, target.HpMax);
+            else
+                heroHealthBar.SetHealth(target.CurrentHp, target.HpMax);
+        }
+
+        // 4. Reaction de la cible
         yield return StartCoroutine(sequencer.PlayReaction(isHeroAttacking, result.DidHit));
 
         Debug.LogWarning(result.DidHit

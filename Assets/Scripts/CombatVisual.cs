@@ -66,11 +66,6 @@ public class CombatVisual : MonoBehaviour
             // On attend le vrai event d'impact pose sur le clip d'attaque
             yield return new WaitUntil(() => _impactReached);
         }
-        //else
-        //{
-        //    // Pas d'Animator (ex: capsule de test) : on simule l'impact a l'arrivee du bump
-        //    yield return new WaitUntil(() => Vector3.Distance(transform.position, target) < 0.01f);
-        //}
 
         // Le retour a la position d'origine n'est pas attendu : il se joue en parallele
         // de la reaction de la cible, ce qui est voulu (cf notes de design).

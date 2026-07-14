@@ -33,7 +33,7 @@ CombatManager (orchestre le flux global)
 
 ## Plan d'action
 
-**Etape suivante — UI barres de vie**
+**Etape suivante — UI barres de vie** --- FAIT !
 - Barre de vie Hero (HUD permanent, en haut a gauche selon le GDD)
 - Barre de vie Ennemi (visible uniquement en phase de combat, en haut a droite en miroir)
 - Mise a jour en temps reel au moment de l'impact (brancher sur les resultats des `AttackResultDto`)

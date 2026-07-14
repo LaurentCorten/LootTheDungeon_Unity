@@ -10,7 +10,10 @@ public class PlayerState : MonoBehaviour
     [Header("Suscriptions")]
     [SerializeField] GameManager gameManager;
     [SerializeField] PlayerMovement playerMovement;
-    
+
+    [Header("HUD")]
+    [SerializeField] HealthBarUI heroHealthBar; // meme objet que celui drag dans CombatManager
+
     //public Hero PlayerUnit => _playerUnit;
 
     private Hero _playerUnit;
@@ -59,5 +62,7 @@ public class PlayerState : MonoBehaviour
             data.damages,
             data.AC
             );
+
+        heroHealthBar.SetHealth(_playerUnit.CurrentHp, _playerUnit.HpMax);
     }
 }
